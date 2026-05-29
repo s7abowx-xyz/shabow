@@ -35,8 +35,7 @@
         
         .sidebar.closed .nav-item span:not(.icon),
         .sidebar.closed h3,
-        .sidebar.closed .site-name,
-        .sidebar.closed .api-selector {
+        .sidebar.closed .site-name {
             display: none;
         }
         
@@ -65,49 +64,6 @@
             padding: 10px;
             background: rgba(255,255,255,0.1);
             border-radius: 50px;
-        }
-        
-        .api-selector {
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .api-selector h4 {
-            color: white;
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        
-        .api-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .api-btn {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
-        }
-        
-        .api-btn.cobalt {
-            background: #25f4ee;
-            color: #000;
-        }
-        
-        .api-btn.railway {
-            background: #ff0050;
-            color: white;
-        }
-        
-        .api-btn.active {
-            border: 2px solid white;
         }
         
         .nav-item {
@@ -299,18 +255,11 @@
             margin-bottom: 10px;
         }
         
-        .current-api {
-            text-align: center;
-            font-size: 12px;
-            color: #aaa;
-            margin-top: 10px;
-        }
-        
         @media (max-width: 768px) {
             .sidebar {
                 width: 70px;
             }
-            .sidebar h3, .nav-item span:not(.icon), .site-name, .api-selector {
+            .sidebar h3, .nav-item span:not(.icon), .site-name {
                 display: none;
             }
             .main-content {
@@ -332,27 +281,18 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <button class="toggle-btn" onclick="toggleSidebar()">☰ ≡</button>
+        <button class="toggle-btn" id="toggleSidebarBtn">☰ ≡</button>
         <div class="site-name">s7abowx-xyz</div>
         
-        <div class="api-selector">
-            <h4>🔧 اختيار API</h4>
-            <div class="api-buttons">
-                <button class="api-btn cobalt active" onclick="setAPI('cobalt')">🚀 Cobalt (كل المنصات)</button>
-                <button class="api-btn railway" onclick="setAPI('railway')">⚡ Railway (خاص)</button>
-            </div>
-            <div class="current-api" id="currentApiText">API الحالي: Cobalt</div>
-        </div>
-        
         <h3>📥 المنصات</h3>
-        <div class="nav-item" onclick="goToPage('home')"><span class="icon">🏠</span><span>الرئيسية</span></div>
-        <div class="nav-item" onclick="goToPage('youtube')"><span class="icon">▶️</span><span>يوتيوب</span></div>
-        <div class="nav-item" onclick="goToPage('tiktok')"><span class="icon">🎵</span><span>تيك توك</span></div>
-        <div class="nav-item" onclick="goToPage('instagram')"><span class="icon">📸</span><span>انستقرام</span></div>
-        <div class="nav-item" onclick="goToPage('spotify')"><span class="icon">🎧</span><span>سبوتيفاي</span></div>
-        <div class="nav-item" onclick="goToPage('facebook')"><span class="icon">🔵</span><span>فيسبوك</span></div>
-        <div class="nav-item" onclick="goToPage('twitter')"><span class="icon">🐦</span><span>تويتر</span></div>
-        <div class="nav-item" onclick="goToPage('pinterest')"><span class="icon">📌</span><span>بينترست</span></div>
+        <div class="nav-item" data-page="home"><span class="icon">🏠</span><span>الرئيسية</span></div>
+        <div class="nav-item" data-page="youtube"><span class="icon">▶️</span><span>يوتيوب</span></div>
+        <div class="nav-item" data-page="tiktok"><span class="icon">🎵</span><span>تيك توك</span></div>
+        <div class="nav-item" data-page="instagram"><span class="icon">📸</span><span>انستقرام</span></div>
+        <div class="nav-item" data-page="spotify"><span class="icon">🎧</span><span>سبوتيفاي</span></div>
+        <div class="nav-item" data-page="facebook"><span class="icon">🔵</span><span>فيسبوك</span></div>
+        <div class="nav-item" data-page="twitter"><span class="icon">🐦</span><span>تويتر</span></div>
+        <div class="nav-item" data-page="pinterest"><span class="icon">📌</span><span>بينترست</span></div>
     </div>
     
     <div class="main-content" id="mainContent">
@@ -362,13 +302,13 @@
                 <h1>✨ مرحباً بك في <span>s7abowx-xyz</span> ✨</h1>
                 <p>حمّل فيديوهات ومحتوى من أشهر المنصات بجودة عالية</p>
                 <div class="features-grid">
-                    <div class="feature-card" onclick="goToPage('youtube')"><span class="icon">▶️</span>يوتيوب</div>
-                    <div class="feature-card" onclick="goToPage('tiktok')"><span class="icon">🎵</span>تيك توك</div>
-                    <div class="feature-card" onclick="goToPage('instagram')"><span class="icon">📸</span>انستقرام</div>
-                    <div class="feature-card" onclick="goToPage('spotify')"><span class="icon">🎧</span>سبوتيفاي</div>
-                    <div class="feature-card" onclick="goToPage('facebook')"><span class="icon">🔵</span>فيسبوك</div>
-                    <div class="feature-card" onclick="goToPage('twitter')"><span class="icon">🐦</span>تويتر</div>
-                    <div class="feature-card" onclick="goToPage('pinterest')"><span class="icon">📌</span>بينترست</div>
+                    <div class="feature-card" data-page="youtube"><span class="icon">▶️</span>يوتيوب</div>
+                    <div class="feature-card" data-page="tiktok"><span class="icon">🎵</span>تيك توك</div>
+                    <div class="feature-card" data-page="instagram"><span class="icon">📸</span>انستقرام</div>
+                    <div class="feature-card" data-page="spotify"><span class="icon">🎧</span>سبوتيفاي</div>
+                    <div class="feature-card" data-page="facebook"><span class="icon">🔵</span>فيسبوك</div>
+                    <div class="feature-card" data-page="twitter"><span class="icon">🐦</span>تويتر</div>
+                    <div class="feature-card" data-page="pinterest"><span class="icon">📌</span>بينترست</div>
                 </div>
             </div>
         </div>
@@ -380,8 +320,8 @@
                 <div class="sub">YouTube Video Downloader</div>
                 <div class="input-group">
                     <input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=...">
-                    <button class="btn-paste" onclick="pasteToInput('youtubeUrl')">📋 لصق</button>
-                    <button onclick="downloadMedia('youtube')">📲 تحميل</button>
+                    <button class="btn-paste" data-input="youtubeUrl">📋 لصق</button>
+                    <button data-platform="youtube">📲 تحميل</button>
                 </div>
                 <div id="youtubeLoading" class="loading">⏳ جاري...</div>
                 <div id="youtubeResult" class="result"></div>
@@ -396,8 +336,8 @@
                 <div class="sub">TikTok Video Downloader</div>
                 <div class="input-group">
                     <input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/...">
-                    <button class="btn-paste" onclick="pasteToInput('tiktokUrl')">📋 لصق</button>
-                    <button onclick="downloadMedia('tiktok')">📲 تحميل</button>
+                    <button class="btn-paste" data-input="tiktokUrl">📋 لصق</button>
+                    <button data-platform="tiktok">📲 تحميل</button>
                 </div>
                 <div id="tiktokLoading" class="loading">⏳ جاري...</div>
                 <div id="tiktokResult" class="result"></div>
@@ -412,8 +352,8 @@
                 <div class="sub">Instagram Video/Photo Downloader</div>
                 <div class="input-group">
                     <input type="text" id="instagramUrl" placeholder="https://www.instagram.com/p/...">
-                    <button class="btn-paste" onclick="pasteToInput('instagramUrl')">📋 لصق</button>
-                    <button onclick="downloadMedia('instagram')">📲 تحميل</button>
+                    <button class="btn-paste" data-input="instagramUrl">📋 لصق</button>
+                    <button data-platform="instagram">📲 تحميل</button>
                 </div>
                 <div id="instagramLoading" class="loading">⏳ جاري...</div>
                 <div id="instagramResult" class="result"></div>
@@ -428,8 +368,8 @@
                 <div class="sub">Spotify MP3 Downloader</div>
                 <div class="input-group">
                     <input type="text" id="spotifyUrl" placeholder="https://open.spotify.com/track/...">
-                    <button class="btn-paste" onclick="pasteToInput('spotifyUrl')">📋 لصق</button>
-                    <button onclick="downloadMedia('spotify')">📲 تحميل</button>
+                    <button class="btn-paste" data-input="spotifyUrl">📋 لصق</button>
+                    <button data-platform="spotify">📲 تحميل</button>
                 </div>
                 <div id="spotifyLoading" class="loading">⏳ جاري...</div>
                 <div id="spotifyResult" class="result"></div>
@@ -444,8 +384,8 @@
                 <div class="sub">Facebook Video Downloader</div>
                 <div class="input-group">
                     <input type="text" id="facebookUrl" placeholder="https://www.facebook.com/.../videos/...">
-                    <button class="btn-paste" onclick="pasteToInput('facebookUrl')">📋 لصق</button>
-                    <button onclick="downloadMedia('facebook')">📲 تحميل</button>
+                    <button class="btn-paste" data-input="facebookUrl">📋 لصق</button>
+                    <button data-platform="facebook">📲 تحميل</button>
                 </div>
                 <div id="facebookLoading" class="loading">⏳ جاري...</div>
                 <div id="facebookResult" class="result"></div>
@@ -460,8 +400,8 @@
                 <div class="sub">Twitter/X Video Downloader</div>
                 <div class="input-group">
                     <input type="text" id="twitterUrl" placeholder="https://twitter.com/user/status/...">
-                    <button class="btn-paste" onclick="pasteToInput('twitterUrl')">📋 لصق</button>
-                    <button onclick="downloadMedia('twitter')">📲 تحميل</button>
+                    <button class="btn-paste" data-input="twitterUrl">📋 لصق</button>
+                    <button data-platform="twitter">📲 تحميل</button>
                 </div>
                 <div id="twitterLoading" class="loading">⏳ جاري...</div>
                 <div id="twitterResult" class="result"></div>
@@ -476,8 +416,8 @@
                 <div class="sub">Pinterest Video/Photo Downloader</div>
                 <div class="input-group">
                     <input type="text" id="pinterestUrl" placeholder="https://www.pinterest.com/pin/...">
-                    <button class="btn-paste" onclick="pasteToInput('pinterestUrl')">📋 لصق</button>
-                    <button onclick="downloadMedia('pinterest')">📲 تحميل</button>
+                    <button class="btn-paste" data-input="pinterestUrl">📋 لصق</button>
+                    <button data-platform="pinterest">📲 تحميل</button>
                 </div>
                 <div id="pinterestLoading" class="loading">⏳ جاري...</div>
                 <div id="pinterestResult" class="result"></div>
@@ -487,70 +427,7 @@
     </div>
 
     <script>
-        const COBALT_API = 'https://api.cobalt.tools/api/json';
         const RAILWAY_API = 'https://s7abow-production-ac06.up.railway.app/download';
-        let currentAPI = 'cobalt';
-        
-        function setAPI(api) {
-            currentAPI = api;
-            document.querySelectorAll('.api-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`.api-btn.${api}`).classList.add('active');
-            document.getElementById('currentApiText').innerHTML = `API الحالي: ${api === 'cobalt' ? 'Cobalt (كل المنصات)' : 'Railway (يوتيوب + تيك توك + بينترست)'}`;
-            showToast(`✅ تم التبديل إلى ${api === 'cobalt' ? 'Cobalt' : 'Railway'}`, '#4caf50');
-        }
-        
-        async function downloadFromAPI(url) {
-            if (currentAPI === 'cobalt') {
-                const response = await fetch(COBALT_API, {
-                    method: 'POST',
-                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: url })
-                });
-                const data = await response.json();
-                if (data.status === 'error' || !data.url) throw new Error(data.text || 'فشل التحميل');
-                return { success: true, download_url: data.url, title: data.filename || 'فيديو' };
-            } else {
-                const response = await fetch(RAILWAY_API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: url, type: 'video' })
-                });
-                const data = await response.json();
-                if (!data.success) throw new Error(data.error || data.detail || 'فشل التحميل');
-                return { success: true, download_url: data.download_url, title: data.title, thumbnail: data.thumbnail };
-            }
-        }
-        
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('closed');
-            document.getElementById('mainContent').classList.toggle('expanded');
-        }
-        
-        function goToPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            const clickedNav = Array.from(document.querySelectorAll('.nav-item')).find(nav => nav.textContent.includes(
-                pageId === 'home' ? 'الرئيسية' :
-                pageId === 'youtube' ? 'يوتيوب' :
-                pageId === 'tiktok' ? 'تيك توك' :
-                pageId === 'instagram' ? 'انستقرام' :
-                pageId === 'spotify' ? 'سبوتيفاي' :
-                pageId === 'facebook' ? 'فيسبوك' :
-                pageId === 'twitter' ? 'تويتر' : 'بينترست'
-            ));
-            if (clickedNav) clickedNav.classList.add('active');
-        }
-        
-        async function pasteToInput(inputId) {
-            try {
-                const text = await navigator.clipboard.readText();
-                document.getElementById(inputId).value = text;
-                showToast('✅ تم لصق الرابط', '#4caf50');
-            } catch(err) {
-                showToast('❌ فشل اللصق', '#f44336');
-            }
-        }
         
         function showToast(msg, bgColor) {
             const div = document.createElement('div');
@@ -558,39 +435,6 @@
             div.style.cssText = `position:fixed;bottom:20px;left:20px;background:${bgColor};color:white;padding:12px 24px;border-radius:50px;z-index:9999;font-weight:bold;`;
             document.body.appendChild(div);
             setTimeout(() => div.remove(), 2500);
-        }
-        
-        async function downloadMedia(platform) {
-            const urlInput = document.getElementById(`${platform}Url`);
-            const url = urlInput?.value.trim();
-            if (!url) { showError(platform, 'الرجاء إدخال رابط'); return; }
-            
-            showLoading(platform, true);
-            hideResult(platform);
-            hideError(platform);
-            
-            try {
-                const result = await downloadFromAPI(url);
-                displayResult(platform, result);
-            } catch(error) {
-                showError(platform, error.message);
-            } finally {
-                showLoading(platform, false);
-            }
-        }
-        
-        function displayResult(platform, data) {
-            const resultDiv = document.getElementById(`${platform}Result`);
-            resultDiv.innerHTML = `
-                <div style="margin-bottom:15px;">
-                    ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:15px; margin-bottom:10px;">` : ''}
-                    <h3 style="color:white; margin-top:10px;">${data.title || 'فيديو'}</h3>
-                </div>
-                <div class="download-links">
-                    <a href="${data.download_url}" class="download-btn" download>📥 تحميل</a>
-                </div>
-            `;
-            resultDiv.style.display = 'block';
         }
         
         function showLoading(platform, show) {
@@ -615,10 +459,88 @@
             }
         }
         
-        function hideError(platform) {
-            const errDiv = document.getElementById(`${platform}Error`);
-            if (errDiv) errDiv.style.display = 'none';
+        function displayResult(platform, data) {
+            const resultDiv = document.getElementById(`${platform}Result`);
+            resultDiv.innerHTML = `
+                <div style="margin-bottom:15px;">
+                    ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:15px; margin-bottom:10px;">` : ''}
+                    <h3 style="color:white; margin-top:10px;">${data.title || 'فيديو'}</h3>
+                </div>
+                <div class="download-links">
+                    <a href="${data.download_url}" class="download-btn" download>📥 تحميل</a>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
         }
+        
+        async function downloadMedia(platform) {
+            const urlInput = document.getElementById(`${platform}Url`);
+            const url = urlInput?.value.trim();
+            if (!url) { showError(platform, 'الرجاء إدخال رابط'); return; }
+            
+            showLoading(platform, true);
+            hideResult(platform);
+            
+            try {
+                const response = await fetch(RAILWAY_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url, type: 'video' })
+                });
+                const data = await response.json();
+                if (!data.success) throw new Error(data.error || data.detail || 'فشل التحميل');
+                displayResult(platform, data);
+            } catch(error) {
+                showError(platform, error.message);
+            } finally {
+                showLoading(platform, false);
+            }
+        }
+        
+        async function pasteToInput(inputId) {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById(inputId).value = text;
+                showToast('✅ تم لصق الرابط', '#4caf50');
+            } catch(err) {
+                showToast('❌ فشل اللصق', '#f44336');
+            }
+        }
+        
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('closed');
+            document.getElementById('mainContent').classList.toggle('expanded');
+        }
+        
+        function goToPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            const clickedNav = Array.from(document.querySelectorAll('.nav-item')).find(nav => nav.getAttribute('data-page') === pageId);
+            if (clickedNav) clickedNav.classList.add('active');
+        }
+        
+        // ربط الأحداث
+        document.getElementById('toggleSidebarBtn').addEventListener('click', toggleSidebar);
+        
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => goToPage(item.getAttribute('data-page')));
+        });
+        
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('click', () => goToPage(card.getAttribute('data-page')));
+        });
+        
+        document.querySelectorAll('.btn-paste').forEach(btn => {
+            btn.addEventListener('click', () => pasteToInput(btn.getAttribute('data-input')));
+        });
+        
+        document.querySelectorAll('button[data-platform]').forEach(btn => {
+            btn.addEventListener('click', () => downloadMedia(btn.getAttribute('data-platform')));
+        });
+        
+        // تفعيل الصفحة الرئيسية
+        document.querySelector('.nav-item[data-page="home"]').classList.add('active');
     </script>
 </body>
 </html>
