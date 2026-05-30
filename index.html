@@ -50,8 +50,8 @@
         .channel-link { display: inline-flex; align-items: center; gap: 10px; background: rgba(0, 255, 255, 0.08); padding: 0.7rem 1.6rem; border-radius: 60px; text-decoration: none; color: #cdf2ff; font-weight: 600; border: 1px solid #2ea0c0; transition: 0.2s; }
         .footer-note { text-align: center; padding: 1rem; font-size: 0.7rem; color: #7c9ed6; border-top: 1px solid rgba(72, 187, 255, 0.15); }
         
-        .download-page { display: none; max-width: 700px; width: 100%; margin: 0 auto; }
-        .download-page.active { display: block; }
+        .download-page, .dev-page { display: none; max-width: 700px; width: 100%; margin: 0 auto; }
+        .download-page.active, .dev-page.active { display: block; }
         .card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 25px; padding: 35px; border: 1px solid rgba(255,255,255,0.2); }
         .card h1 { font-size: 28px; text-align: center; margin-bottom: 8px; }
         .card .sub { color: #aaa; text-align: center; margin-bottom: 25px; font-size: 14px; }
@@ -64,6 +64,18 @@
         .error { color: #ff6b6b; text-align: center; margin-top: 15px; display: none; }
         .download-btn { display: inline-block; background: #25f4ee; color: #000; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 15px; }
         .back-home { display: block; text-align: center; margin-top: 20px; color: #25f4ee; cursor: pointer; text-decoration: none; }
+        
+        /* صفحة المطور */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-card { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; text-align: center; }
+        .stat-card h3 { font-size: 32px; color: #25f4ee; margin-bottom: 5px; }
+        .stat-card p { color: #aaa; font-size: 14px; }
+        
+        .api-endpoints { margin-top: 30px; }
+        .api-item { background: rgba(0,0,0,0.3); border-radius: 15px; padding: 15px; margin: 10px 0; }
+        .api-item h4 { color: #25f4ee; margin-bottom: 10px; }
+        .api-url { background: #0a0a1a; padding: 10px; border-radius: 10px; font-family: monospace; font-size: 12px; direction: ltr; text-align: left; word-break: break-all; margin: 10px 0; }
+        .copy-btn { background: #25f4ee; color: #000; border: none; padding: 5px 12px; border-radius: 50px; cursor: pointer; font-size: 12px; }
         
         @media (max-width: 480px) {
             .portfolio-card { border-radius: 2rem; }
@@ -91,6 +103,7 @@
     <div class="nav-item" data-page="facebook"><span class="icon">🔵</span><span>فيسبوك</span></div>
     <div class="nav-item" data-page="twitter"><span class="icon">🐦</span><span>تويتر</span></div>
     <div class="nav-item" data-page="pinterest"><span class="icon">📌</span><span>بينترست</span></div>
+    <div class="nav-item" data-page="dev"><span class="icon">⚙️</span><span>المطور</span></div>
 </div>
 
 <div class="main-content" id="mainContent">
@@ -138,6 +151,88 @@
     <div id="facebookPage" class="download-page"><div class="card"><h1>🔵 تحميل فيسبوك</h1><div class="input-group"><input type="text" id="facebookUrl" placeholder="https://www.facebook.com/.../videos/..."><button class="btn-paste" data-input="facebookUrl">📋 لصق</button><button data-platform="facebook">📲 تحميل</button></div><div id="facebookLoading" class="loading"></div><div id="facebookResult" class="result"></div><div id="facebookError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
     <div id="twitterPage" class="download-page"><div class="card"><h1>🐦 تحميل تويتر</h1><div class="input-group"><input type="text" id="twitterUrl" placeholder="https://twitter.com/user/status/..."><button class="btn-paste" data-input="twitterUrl">📋 لصق</button><button data-platform="twitter">📲 تحميل</button></div><div id="twitterLoading" class="loading"></div><div id="twitterResult" class="result"></div><div id="twitterError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
     <div id="pinterestPage" class="download-page"><div class="card"><h1>📌 تحميل بينترست</h1><div class="input-group"><input type="text" id="pinterestUrl" placeholder="https://www.pinterest.com/pin/..."><button class="btn-paste" data-input="pinterestUrl">📋 لصق</button><button data-platform="pinterest">📲 تحميل</button></div><div id="pinterestLoading" class="loading"></div><div id="pinterestResult" class="result"></div><div id="pinterestError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+
+    <!-- صفحة المطور -->
+    <div id="devPage" class="dev-page">
+        <div class="card">
+            <h1>⚙️ لوحة التحكم - المطور</h1>
+            <div class="sub">إحصائيات الموقع وواجهات API</div>
+            
+            <div class="input-group">
+                <input type="password" id="devPassword" placeholder="كلمة المرور">
+                <button onclick="checkDevLogin()">دخول</button>
+            </div>
+            
+            <div id="devContent" style="display: none;">
+                <!-- الإحصائيات -->
+                <div class="stats-grid" id="statsContainer">
+                    <div class="stat-card">
+                        <h3 id="totalDownloads">0</h3>
+                        <p>إجمالي التحميلات</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalUsers">0</h3>
+                        <p>عدد المستخدمين</p>
+                    </div>
+                </div>
+                
+                <!-- واجهات API -->
+                <div class="api-endpoints">
+                    <div class="section-title"><i class="fas fa-code"></i> <span>واجهات API للمطورين</span></div>
+                    
+                    <div class="api-item">
+                        <h4>📥 API عام للتحميل</h4>
+                        <div class="api-url" id="apiGeneral">https://s7abow-production-ac06.up.railway.app/download</div>
+                        <button class="copy-btn" onclick="copyToClipboard('apiGeneral')">📋 نسخ الرابط</button>
+                    </div>
+                    
+                    <div class="api-item">
+                        <h4>▶️ API تحميل يوتيوب</h4>
+                        <div class="api-url" id="apiYoutube">https://s7abow-production-ac06.up.railway.app/download?platform=youtube</div>
+                        <button class="copy-btn" onclick="copyToClipboard('apiYoutube')">📋 نسخ الرابط</button>
+                    </div>
+                    
+                    <div class="api-item">
+                        <h4>🎵 API تحميل تيك توك</h4>
+                        <div class="api-url" id="apiTiktok">https://s7abow-production-ac06.up.railway.app/download?platform=tiktok</div>
+                        <button class="copy-btn" onclick="copyToClipboard('apiTiktok')">📋 نسخ الرابط</button>
+                    </div>
+                    
+                    <div class="api-item">
+                        <h4>📸 API تحميل انستقرام</h4>
+                        <div class="api-url" id="ApiInstagram">https://s7abow-production-ac06.up.railway.app/download?platform=instagram</div>
+                        <button class="copy-btn" onclick="copyToClipboard('ApiInstagram')">📋 نسخ الرابط</button>
+                    </div>
+                    
+                    <div class="api-item">
+                        <h4>🎧 API تحميل سبوتيفاي</h4>
+                        <div class="api-url" id="ApiSpotify">https://s7abow-production-ac06.up.railway.app/download?platform=spotify</div>
+                        <button class="copy-btn" onclick="copyToClipboard('ApiSpotify')">📋 نسخ الرابط</button>
+                    </div>
+                    
+                    <div class="api-item">
+                        <h4>🔵 API تحميل فيسبوك</h4>
+                        <div class="api-url" id="ApiFacebook">https://s7abow-production-ac06.up.railway.app/download?platform=facebook</div>
+                        <button class="copy-btn" onclick="copyToClipboard('ApiFacebook')">📋 نسخ الرابط</button>
+                    </div>
+                    
+                    <div class="api-item">
+                        <h4>🐦 API تحميل تويتر</h4>
+                        <div class="api-url" id="ApiTwitter">https://s7abow-production-ac06.up.railway.app/download?platform=twitter</div>
+                        <button class="copy-btn" onclick="copyToClipboard('ApiTwitter')">📋 نسخ الرابط</button>
+                    </div>
+                    
+                    <div class="api-item">
+                        <h4>📌 API تحميل بينترست</h4>
+                        <div class="api-url" id="ApiPinterest">https://s7abow-production-ac06.up.railway.app/download?platform=pinterest</div>
+                        <button class="copy-btn" onclick="copyToClipboard('ApiPinterest')">📋 نسخ الرابط</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-home" onclick="goToHome()">← العودة للرئيسية</div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -162,7 +257,7 @@
     
     function goToHome() {
         document.getElementById('homePage').style.display = 'block';
-        document.querySelectorAll('.download-page').forEach(page => {
+        document.querySelectorAll('.download-page, .dev-page').forEach(page => {
             page.classList.remove('active');
         });
         if (sidebar) sidebar.classList.remove('open');
@@ -170,7 +265,7 @@
     
     function goToPage(pageId) {
         document.getElementById('homePage').style.display = 'none';
-        document.querySelectorAll('.download-page').forEach(page => {
+        document.querySelectorAll('.download-page, .dev-page').forEach(page => {
             page.classList.remove('active');
         });
         document.getElementById(pageId + 'Page').classList.add('active');
@@ -264,6 +359,40 @@
             resDiv.style.display = 'none';
             resDiv.innerHTML = '';
         }
+    }
+    
+    // دوال صفحة المطور
+    async function checkDevLogin() {
+        const pwd = document.getElementById('devPassword').value;
+        if (pwd === 's7abow') {
+            document.getElementById('devContent').style.display = 'block';
+            await loadStats();
+        } else {
+            showToast('❌ كلمة المرور غير صحيحة', '#f44336');
+        }
+    }
+    
+    async function loadStats() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/admin/stats`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: 's7abow' })
+            });
+            const data = await response.json();
+            if (data.success) {
+                document.getElementById('totalDownloads').textContent = data.stats.total_downloads || 0;
+                document.getElementById('totalUsers').textContent = data.stats.total_users || 0;
+            }
+        } catch(e) {
+            console.log('خطأ في جلب الإحصائيات', e);
+        }
+    }
+    
+    function copyToClipboard(elementId) {
+        const text = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(text);
+        showToast('✅ تم نسخ الرابط', '#4caf50');
     }
     
     document.querySelectorAll('.btn-paste').forEach(btn => {
