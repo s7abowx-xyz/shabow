@@ -2,146 +2,379 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>s7abowx-xyz | تحميل فيديوهات من جميع المنصات</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>s7abow | تحميل فيديوهات من جميع المنصات</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .sidebar {
-            width: 280px;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(15px);
-            padding: 25px 15px;
-            border-left: 1px solid rgba(255,255,255,0.1);
+
+        .video-background {
             position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            right: 0;
             top: 0;
-            z-index: 100;
-            transition: all 0.3s ease;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
         }
-        
-        .sidebar.closed {
-            width: 70px;
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
         }
-        
-        .sidebar.closed .nav-item span:not(.icon),
-        .sidebar.closed h3,
-        .sidebar.closed .site-name {
-            display: none;
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            color: #eef5ff;
+            min-height: 100vh;
+            position: relative;
         }
-        
-        .toggle-btn {
+
+        /* زر القائمة الجانبية */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
             background: #ff0050;
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 8px 15px;
+            padding: 12px 18px;
             cursor: pointer;
-            margin-bottom: 20px;
-            width: 100%;
-            font-size: 14px;
+            font-size: 20px;
+            z-index: 1001;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        
-        .toggle-btn:hover {
+
+        .menu-btn:hover {
             background: #e60046;
+            transform: scale(1.05);
         }
-        
-        .site-name {
+
+        /* القائمة الجانبية */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            transition: 0.3s ease;
+            padding: 70px 20px 20px;
+            overflow-y: auto;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar h3 {
+            color: white;
             text-align: center;
-            color: #25f4ee;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50px;
+            margin-bottom: 25px;
+            font-size: 22px;
         }
-        
+
         .nav-item {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 12px 16px;
-            margin: 6px 0;
-            background: rgba(255,255,255,0.05);
+            margin: 8px 0;
+            background: rgba(255,255,255,0.08);
             border-radius: 12px;
             cursor: pointer;
             transition: 0.3s;
             color: #ccc;
             font-weight: bold;
         }
-        
-        .nav-item:hover, .nav-item.active {
+
+        .nav-item:hover {
             background: #ff0050;
             color: white;
+            transform: translateX(-5px);
         }
-        
+
         .nav-item .icon {
             font-size: 22px;
             min-width: 35px;
         }
-        
+
+        /* المحتوى الرئيسي */
         .main-content {
-            flex: 1;
-            margin-right: 280px;
-            padding: 30px;
             min-height: 100vh;
-            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+
+        /* البطاقة الرئيسية */
+        .portfolio-card {
+            max-width: 560px;
+            width: 100%;
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(14px);
+            border-radius: 3rem;
+            border: 1px solid rgba(72, 187, 255, 0.25);
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.6);
+            overflow: hidden;
+            transition: transform 0.25s ease;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .avatar-section {
+            text-align: center;
+            padding-top: 2rem;
         }
         
-        .main-content.expanded {
-            margin-right: 70px;
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #7ce4ff;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
         }
-        
-        .page {
+
+        .header-glow {
+            padding: 0.75rem 1.8rem 1.5rem;
+            text-align: center;
+        }
+
+        .badge-dev {
+            display: inline-block;
+            background: rgba(0, 255, 255, 0.12);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #7ce4ff;
+            border: 1px solid rgba(0, 255, 255, 0.45);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(120deg, #ffffff, #7ac7ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sub-role {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #cae3ff;
+            background: rgba(255,255,255,0.05);
+            display: inline-block;
+            padding: 0.25rem 1.2rem;
+            border-radius: 60px;
+            margin-top: 0.4rem;
+        }
+
+        .fullstack-tagline {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #b4d0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .social-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.6rem 0 1rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            background: rgba(15, 25, 45, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 0.7rem 1.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-weight: 700;
+            font-size: 1rem;
+            border: 1px solid rgba(100, 200, 255, 0.4);
+            transition: all 0.2s;
+            color: #eef5ff;
+            text-decoration: none;
+        }
+
+        .contact-btn.telegram:hover {
+            background: #1f6f8f;
+            border-color: #7ad0ff;
+        }
+
+        .contact-btn.whatsapp:hover {
+            background: #1f8f4e;
+            border-color: #6bffb0;
+        }
+
+        .skills-section {
+            padding: 1.6rem 1.8rem;
+            border-bottom: 1px solid rgba(72, 187, 255, 0.2);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+            color: #d6f0ff;
+        }
+
+        .section-title i {
+            font-size: 1.3rem;
+            color: #5bc0ff;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+        }
+
+        .skill-pill {
+            background: rgba(0, 30, 50, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 0.5rem 1.3rem;
+            border-radius: 40px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.25);
+            font-size: 0.95rem;
+        }
+
+        .skill-pill i {
+            font-size: 1.1rem;
+            color: #7ad0ff;
+        }
+
+        .channel-section {
+            padding: 1.6rem 1.8rem 2rem;
+            text-align: center;
+        }
+
+        .channel-box {
+            background: linear-gradient(125deg, #0e1a2e, #091222);
+            border-radius: 2rem;
+            padding: 1.5rem 1rem;
+            border: 1px solid rgba(0, 230, 250, 0.35);
+        }
+
+        .channel-icon {
+            font-size: 2.2rem;
+            color: #57c7ff;
+            margin-bottom: 0.7rem;
+        }
+
+        .channel-box h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, #a0e0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .channel-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 255, 255, 0.08);
+            padding: 0.7rem 1.6rem;
+            border-radius: 60px;
+            text-decoration: none;
+            color: #cdf2ff;
+            font-weight: 600;
+            border: 1px solid #2ea0c0;
+            transition: 0.2s;
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.7rem;
+            color: #7c9ed6;
+            border-top: 1px solid rgba(72, 187, 255, 0.15);
+        }
+
+        /* صفحات التحميل */
+        .download-page {
             display: none;
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
         }
-        
-        .page.active {
+
+        .download-page.active {
             display: block;
         }
-        
+
         .card {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
             border-radius: 25px;
             padding: 35px;
-            max-width: 750px;
-            margin: 0 auto;
             border: 1px solid rgba(255,255,255,0.2);
         }
-        
-        h1 {
-            color: white;
+
+        .card h1 {
+            font-size: 28px;
             text-align: center;
             margin-bottom: 8px;
-            font-size: 28px;
         }
-        
-        .sub {
+
+        .card .sub {
             color: #aaa;
             text-align: center;
             margin-bottom: 25px;
             font-size: 14px;
         }
-        
+
         .input-group {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        
-        input {
+
+        .input-group input {
             flex: 1;
             padding: 14px 18px;
             border: none;
@@ -150,8 +383,8 @@
             background: white;
             outline: none;
         }
-        
-        button {
+
+        .input-group button {
             padding: 14px 22px;
             background: #ff0050;
             color: white;
@@ -161,16 +394,12 @@
             cursor: pointer;
             font-weight: bold;
         }
-        
-        button:hover {
-            background: #e60046;
-        }
-        
+
         .btn-paste {
-            background: #25f4ee;
-            color: #000;
+            background: #25f4ee !important;
+            color: #000 !important;
         }
-        
+
         .result {
             display: none;
             margin-top: 25px;
@@ -178,369 +407,181 @@
             border-radius: 20px;
             padding: 20px;
         }
-        
+
         .loading {
             display: none;
             text-align: center;
             color: white;
             margin: 20px 0;
         }
-        
+
         .error {
             color: #ff6b6b;
             text-align: center;
             margin-top: 15px;
             display: none;
-            font-size: 14px;
         }
-        
-        .download-links {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 15px;
-        }
-        
+
         .download-btn {
-            flex: 1;
-            text-align: center;
+            display: inline-block;
             background: #25f4ee;
             color: #000;
-            padding: 12px;
+            padding: 12px 24px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 14px;
+            margin-top: 15px;
         }
-        
-        .hero {
-            text-align: center;
-            color: white;
-            padding: 50px 20px;
-        }
-        
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
-        
-        .hero h1 span {
-            color: #25f4ee;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 15px;
-            margin-top: 40px;
-        }
-        
-        .feature-card {
-            background: rgba(255,255,255,0.1);
-            padding: 18px;
-            border-radius: 20px;
-            text-align: center;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-        
-        .feature-card:hover {
-            background: #ff0050;
-            transform: translateY(-5px);
-        }
-        
-        .feature-card .icon {
-            font-size: 35px;
+
+        .back-home {
             display: block;
-            margin-bottom: 10px;
+            text-align: center;
+            margin-top: 20px;
+            color: #25f4ee;
+            cursor: pointer;
+            text-decoration: none;
         }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 70px;
+
+        @media (max-width: 480px) {
+            .portfolio-card {
+                border-radius: 2rem;
             }
-            .sidebar h3, .nav-item span:not(.icon), .site-name {
-                display: none;
+            h1 {
+                font-size: 2rem;
             }
-            .main-content {
-                margin-right: 70px;
+            .avatar {
+                width: 95px;
+                height: 95px;
             }
-            .card {
-                padding: 20px;
-            }
-            .hero h1 {
-                font-size: 28px;
-            }
-        }
-        
-        video, img {
-            max-width: 100%;
-            border-radius: 15px;
         }
     </style>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        <button class="toggle-btn" id="toggleSidebarBtn">☰ ≡</button>
-        <div class="site-name">s7abowx-xyz</div>
-        
-        <h3>📥 المنصات</h3>
-        <div class="nav-item" data-page="home"><span class="icon">🏠</span><span>الرئيسية</span></div>
-        <div class="nav-item" data-page="youtube"><span class="icon">▶️</span><span>يوتيوب</span></div>
-        <div class="nav-item" data-page="tiktok"><span class="icon">🎵</span><span>تيك توك</span></div>
-        <div class="nav-item" data-page="instagram"><span class="icon">📸</span><span>انستقرام</span></div>
-        <div class="nav-item" data-page="spotify"><span class="icon">🎧</span><span>سبوتيفاي</span></div>
-        <div class="nav-item" data-page="facebook"><span class="icon">🔵</span><span>فيسبوك</span></div>
-        <div class="nav-item" data-page="twitter"><span class="icon">🐦</span><span>تويتر</span></div>
-        <div class="nav-item" data-page="pinterest"><span class="icon">📌</span><span>بينترست</span></div>
+
+<video class="video-background" autoplay loop muted playsinline>
+    <source src="https://cdn.dix.lat/me/d34d1780-619a-4293-b1ad-68d6f0d1d8e9.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<!-- زر القائمة -->
+<button class="menu-btn" id="menuBtn">☰</button>
+
+<!-- القائمة الجانبية -->
+<div class="sidebar" id="sidebar">
+    <h3>📥 المنصات</h3>
+    <div class="nav-item" data-page="home">
+        <span class="icon">🏠</span>
+        <span>الرئيسية</span>
     </div>
-    
-    <div class="main-content" id="mainContent">
-        <!-- الرئيسية -->
-        <div id="home" class="page active">
-            <div class="hero">
-                <h1>✨ مرحباً بك في <span>s7abowx-xyz</span> ✨</h1>
-                <p>حمّل فيديوهات ومحتوى من أشهر المنصات بجودة عالية</p>
-                <div class="features-grid">
-                    <div class="feature-card" data-page="youtube"><span class="icon">▶️</span>يوتيوب</div>
-                    <div class="feature-card" data-page="tiktok"><span class="icon">🎵</span>تيك توك</div>
-                    <div class="feature-card" data-page="instagram"><span class="icon">📸</span>انستقرام</div>
-                    <div class="feature-card" data-page="spotify"><span class="icon">🎧</span>سبوتيفاي</div>
-                    <div class="feature-card" data-page="facebook"><span class="icon">🔵</span>فيسبوك</div>
-                    <div class="feature-card" data-page="twitter"><span class="icon">🐦</span>تويتر</div>
-                    <div class="feature-card" data-page="pinterest"><span class="icon">📌</span>بينترست</div>
-                </div>
+    <div class="nav-item" data-page="youtube">
+        <span class="icon">▶️</span>
+        <span>يوتيوب</span>
+    </div>
+    <div class="nav-item" data-page="tiktok">
+        <span class="icon">🎵</span>
+        <span>تيك توك</span>
+    </div>
+    <div class="nav-item" data-page="instagram">
+        <span class="icon">📸</span>
+        <span>انستقرام</span>
+    </div>
+    <div class="nav-item" data-page="spotify">
+        <span class="icon">🎧</span>
+        <span>سبوتيفاي</span>
+    </div>
+    <div class="nav-item" data-page="facebook">
+        <span class="icon">🔵</span>
+        <span>فيسبوك</span>
+    </div>
+    <div class="nav-item" data-page="twitter">
+        <span class="icon">🐦</span>
+        <span>تويتر</span>
+    </div>
+    <div class="nav-item" data-page="pinterest">
+        <span class="icon">📌</span>
+        <span>بينترست</span>
+    </div>
+</div>
+
+<div class="main-content" id="mainContent">
+    <!-- الصفحة الرئيسية -->
+    <div id="homePage" class="portfolio-card">
+        <div class="avatar-section">
+            <img class="avatar" src="https://cdn.dix.lat/me/33482beb-b9aa-4b4f-ac01-b7ffa40aea75.jpg" alt="s7abow">
+        </div>
+        <div class="header-glow">
+            <div class="badge-dev"><i class="fas fa-code"></i> s7abow</div>
+            <h1>s7abow</h1>
+            <div class="sub-role"><i class="fas fa-robot"></i> مطور وبات وتساب</div>
+            <div class="fullstack-tagline"><i class="fas fa-globe"></i> Full Stack Web <span>|</span> <i class="fab fa-bots"></i> Bot Engineer</div>
+        </div>
+        <div class="social-row">
+            <a href="https://t.me/K_S_m_Mark" target="_blank" class="contact-btn telegram"><i class="fab fa-telegram-plane"></i> Telegram</a>
+            <a href="https://wa.me/201017274961" target="_blank" class="contact-btn whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
+        <div class="skills-section">
+            <div class="section-title"><i class="fas fa-cog"></i> <span>My Skills</span></div>
+            <div class="skills-grid">
+                <div class="skill-pill"><i class="fab fa-js"></i> JavaScript</div>
+                <div class="skill-pill"><i class="fab fa-python"></i> Python</div>
+                <div class="skill-pill"><i class="fab fa-html5"></i> HTML <i class="fab fa-css3-alt"></i> & CSS</div>
+                <div class="skill-pill"><i class="fas fa-database"></i> MongoDB</div>
+                <div class="skill-pill"><i class="fab fa-node-js"></i> Node.js</div>
+                <div class="skill-pill"><i class="fas fa-code-branch"></i> Bot API</div>
             </div>
         </div>
-        
-        <!-- YouTube -->
-        <div id="youtube" class="page">
-            <div class="card">
-                <h1>▶️ تحميل يوتيوب</h1>
-                <div class="sub">YouTube Video Downloader</div>
-                <div class="input-group">
-                    <input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=...">
-                    <button class="btn-paste" data-input="youtubeUrl">📋 لصق</button>
-                    <button data-platform="youtube">📲 تحميل</button>
-                </div>
-                <div id="youtubeLoading" class="loading">⏳ جاري...</div>
-                <div id="youtubeResult" class="result"></div>
-                <div id="youtubeError" class="error"></div>
+        <div class="channel-section">
+            <div class="section-title" style="justify-content: center;"><i class="fab fa-telegram"></i> My Channel</div>
+            <div class="channel-box">
+                <div class="channel-icon"><i class="fab fa-telegram"></i></div>
+                <h3>s7abow</h3>
+                <div class="channel-desc">أحدث الشروحات، أكواد البوتات، وأخبار التقنية</div>
+                <a href="https://t.me/anya_boteta" target="_blank" class="channel-link"><i class="fab fa-telegram-plane"></i> انضم إلى القناة <i class="fas fa-arrow-left"></i></a>
             </div>
         </div>
-        
-        <!-- TikTok -->
-        <div id="tiktok" class="page">
-            <div class="card">
-                <h1>🎵 تحميل تيك توك</h1>
-                <div class="sub">TikTok Video Downloader</div>
-                <div class="input-group">
-                    <input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/...">
-                    <button class="btn-paste" data-input="tiktokUrl">📋 لصق</button>
-                    <button data-platform="tiktok">📲 تحميل</button>
-                </div>
-                <div id="tiktokLoading" class="loading">⏳ جاري...</div>
-                <div id="tiktokResult" class="result"></div>
-                <div id="tiktokError" class="error"></div>
+        <div class="footer-note"><i class="fas fa-code"></i> Full Stack & Bot Engineer | مطور محترف</div>
+    </div>
+
+    <!-- صفحات التحميل -->
+    <div id="youtubePage" class="download-page">
+        <div class="card">
+            <h1>▶️ تحميل يوتيوب</h1>
+            <div class="sub">فيديو بجودة عالية أو MP3</div>
+            <div class="input-group">
+                <input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=...">
+                <button class="btn-paste" data-input="youtubeUrl">📋 لصق</button>
+                <button data-platform="youtube" data-type="video">📲 تحميل فيديو</button>
+                <button data-platform="youtube" data-type="audio" style="background:#25f4ee;color:#000;">🎵 تحميل صوت</button>
             </div>
-        </div>
-        
-        <!-- Instagram -->
-        <div id="instagram" class="page">
-            <div class="card">
-                <h1>📸 تحميل انستقرام</h1>
-                <div class="sub">Instagram Video/Photo Downloader</div>
-                <div class="input-group">
-                    <input type="text" id="instagramUrl" placeholder="https://www.instagram.com/p/...">
-                    <button class="btn-paste" data-input="instagramUrl">📋 لصق</button>
-                    <button data-platform="instagram">📲 تحميل</button>
-                </div>
-                <div id="instagramLoading" class="loading">⏳ جاري...</div>
-                <div id="instagramResult" class="result"></div>
-                <div id="instagramError" class="error"></div>
-            </div>
-        </div>
-        
-        <!-- Spotify -->
-        <div id="spotify" class="page">
-            <div class="card">
-                <h1>🎧 تحميل سبوتيفاي</h1>
-                <div class="sub">Spotify MP3 Downloader</div>
-                <div class="input-group">
-                    <input type="text" id="spotifyUrl" placeholder="https://open.spotify.com/track/...">
-                    <button class="btn-paste" data-input="spotifyUrl">📋 لصق</button>
-                    <button data-platform="spotify">📲 تحميل</button>
-                </div>
-                <div id="spotifyLoading" class="loading">⏳ جاري...</div>
-                <div id="spotifyResult" class="result"></div>
-                <div id="spotifyError" class="error"></div>
-            </div>
-        </div>
-        
-        <!-- Facebook -->
-        <div id="facebook" class="page">
-            <div class="card">
-                <h1>🔵 تحميل فيسبوك</h1>
-                <div class="sub">Facebook Video Downloader</div>
-                <div class="input-group">
-                    <input type="text" id="facebookUrl" placeholder="https://www.facebook.com/.../videos/...">
-                    <button class="btn-paste" data-input="facebookUrl">📋 لصق</button>
-                    <button data-platform="facebook">📲 تحميل</button>
-                </div>
-                <div id="facebookLoading" class="loading">⏳ جاري...</div>
-                <div id="facebookResult" class="result"></div>
-                <div id="facebookError" class="error"></div>
-            </div>
-        </div>
-        
-        <!-- Twitter -->
-        <div id="twitter" class="page">
-            <div class="card">
-                <h1>🐦 تحميل تويتر</h1>
-                <div class="sub">Twitter/X Video Downloader</div>
-                <div class="input-group">
-                    <input type="text" id="twitterUrl" placeholder="https://twitter.com/user/status/...">
-                    <button class="btn-paste" data-input="twitterUrl">📋 لصق</button>
-                    <button data-platform="twitter">📲 تحميل</button>
-                </div>
-                <div id="twitterLoading" class="loading">⏳ جاري...</div>
-                <div id="twitterResult" class="result"></div>
-                <div id="twitterError" class="error"></div>
-            </div>
-        </div>
-        
-        <!-- Pinterest -->
-        <div id="pinterest" class="page">
-            <div class="card">
-                <h1>📌 تحميل بينترست</h1>
-                <div class="sub">Pinterest Video/Photo Downloader</div>
-                <div class="input-group">
-                    <input type="text" id="pinterestUrl" placeholder="https://www.pinterest.com/pin/...">
-                    <button class="btn-paste" data-input="pinterestUrl">📋 لصق</button>
-                    <button data-platform="pinterest">📲 تحميل</button>
-                </div>
-                <div id="pinterestLoading" class="loading">⏳ جاري...</div>
-                <div id="pinterestResult" class="result"></div>
-                <div id="pinterestError" class="error"></div>
-            </div>
+            <div id="youtubeLoading" class="loading">⏳ جاري...</div>
+            <div id="youtubeResult" class="result"></div>
+            <div id="youtubeError" class="error"></div>
+            <div class="back-home" onclick="goToHome()">← العودة للرئيسية</div>
         </div>
     </div>
 
-    <script>
-        const RAILWAY_API = 'https://s7abow-production-ac06.up.railway.app/download';
-        
-        function showToast(msg, bgColor) {
-            const div = document.createElement('div');
-            div.textContent = msg;
-            div.style.cssText = `position:fixed;bottom:20px;left:20px;background:${bgColor};color:white;padding:12px 24px;border-radius:50px;z-index:9999;font-weight:bold;`;
-            document.body.appendChild(div);
-            setTimeout(() => div.remove(), 2500);
-        }
-        
-        function showLoading(platform, show) {
-            const loader = document.getElementById(`${platform}Loading`);
-            if (loader) loader.style.display = show ? 'block' : 'none';
-        }
-        
-        function showError(platform, msg) {
-            const errDiv = document.getElementById(`${platform}Error`);
-            if (errDiv) {
-                errDiv.textContent = msg;
-                errDiv.style.display = 'block';
-                setTimeout(() => errDiv.style.display = 'none', 5000);
-            }
-        }
-        
-        function hideResult(platform) {
-            const resDiv = document.getElementById(`${platform}Result`);
-            if (resDiv) {
-                resDiv.style.display = 'none';
-                resDiv.innerHTML = '';
-            }
-        }
-        
-        function displayResult(platform, data) {
-            const resultDiv = document.getElementById(`${platform}Result`);
-            resultDiv.innerHTML = `
-                <div style="margin-bottom:15px;">
-                    ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:15px; margin-bottom:10px;">` : ''}
-                    <h3 style="color:white; margin-top:10px;">${data.title || 'فيديو'}</h3>
-                </div>
-                <div class="download-links">
-                    <a href="${data.download_url}" class="download-btn" download>📥 تحميل</a>
-                </div>
-            `;
-            resultDiv.style.display = 'block';
-        }
-        
-        async function downloadMedia(platform) {
-            const urlInput = document.getElementById(`${platform}Url`);
-            const url = urlInput?.value.trim();
-            if (!url) { showError(platform, 'الرجاء إدخال رابط'); return; }
-            
-            showLoading(platform, true);
-            hideResult(platform);
-            
-            try {
-                const response = await fetch(RAILWAY_API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: url, type: 'video' })
-                });
-                const data = await response.json();
-                if (!data.success) throw new Error(data.error || data.detail || 'فشل التحميل');
-                displayResult(platform, data);
-            } catch(error) {
-                showError(platform, error.message);
-            } finally {
-                showLoading(platform, false);
-            }
-        }
-        
-        async function pasteToInput(inputId) {
-            try {
-                const text = await navigator.clipboard.readText();
-                document.getElementById(inputId).value = text;
-                showToast('✅ تم لصق الرابط', '#4caf50');
-            } catch(err) {
-                showToast('❌ فشل اللصق', '#f44336');
-            }
-        }
-        
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('closed');
-            document.getElementById('mainContent').classList.toggle('expanded');
-        }
-        
-        function goToPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            const clickedNav = Array.from(document.querySelectorAll('.nav-item')).find(nav => nav.getAttribute('data-page') === pageId);
-            if (clickedNav) clickedNav.classList.add('active');
-        }
-        
-        // ربط الأحداث
-        document.getElementById('toggleSidebarBtn').addEventListener('click', toggleSidebar);
-        
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => goToPage(item.getAttribute('data-page')));
-        });
-        
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('click', () => goToPage(card.getAttribute('data-page')));
-        });
-        
-        document.querySelectorAll('.btn-paste').forEach(btn => {
-            btn.addEventListener('click', () => pasteToInput(btn.getAttribute('data-input')));
-        });
-        
-        document.querySelectorAll('button[data-platform]').forEach(btn => {
-            btn.addEventListener('click', () => downloadMedia(btn.getAttribute('data-platform')));
-        });
-        
-        // تفعيل الصفحة الرئيسية
-        document.querySelector('.nav-item[data-page="home"]').classList.add('active');
-    </script>
-</body>
-</html>
+    <div id="tiktokPage" class="download-page">
+        <div class="card">
+            <h1>🎵 تحميل تيك توك</h1>
+            <div class="input-group">
+                <input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/...">
+                <button class="btn-paste" data-input="tiktokUrl">📋 لصق</button>
+                <button data-platform="tiktok">📲 تحميل</button>
+            </div>
+            <div id="tiktokLoading" class="loading">⏳ جاري...</div>
+            <div id="tiktokResult" class="result"></div>
+            <div id="tiktokError" class="error"></div>
+            <div class="back-home" onclick="goToHome()">← العودة للرئيسية</div>
+        </div>
+    </div>
+
+    <!-- بنفس الطريقة لباقي المنصات... -->
+    <div id="instagramPage" class="download-page"><div class="card"><h1>📸 تحميل انستقرام</h1><div class="input-group"><input type="text" id="instagramUrl" placeholder="https://www.instagram.com/p/..."><button class="btn-paste" data-input="instagramUrl">📋 لصق</button><button data-platform="instagram">📲 تحميل</button></div><div id="instagramLoading" class="loading"></div><div id="instagramResult" class="result"></div><div id="instagramError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+
+    <div id="spotifyPage" class="download-page"><div class="card"><h1>🎧 تحميل سبوتيفاي</h1><div class="input-group"><input type="text" id="spotifyUrl" placeholder="https://open.spotify.com/track/..."><button class="btn-paste" data-input="spotifyUrl">📋 لصق</button><button data-platform="spotify">📲 تحميل</button></div><div id="spotifyLoading" class="loading"></div><div id="spotifyResult" class="result"></div><div id="spotifyError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+
+    <div id="facebookPage" class="download-page"><div class="card"><h1>🔵 تحميل فيسبوك</h1><div class="input-group"><input type="text" id="facebookUrl" placeholder="https://www.facebook.com/.../videos/..."><button class="btn-paste" data-input="facebookUrl">📋 لصق</button><button data-platform="facebook">📲 تحميل</button></div><div id="facebookLoading" class="loading"></div><div id="facebookResult" class="result"></div><div id="facebookError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+
+    <div id="twitterPage" class="download-page"><div class="card"><h1>🐦 تحميل تويتر</h1><div class="input-group"><input type="text" id="twitterUrl" placeholder="https://twitter.com/user/status/..."><button class="btn-paste" data-input="twitterUrl">📋 لصق</button><button data-platform="twitter">📲 تحميل</button></div><div id="twitterLoading" class="loading"></div><div id="twitterResult" class="result"></div><div id="twitterError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+
+    <div id="pinterestPage" class="download-page"><div class="card"><h1>📌 تحميل بينترست</h1><div class="input-group"><input type="text" id="pinterestUrl" placeholder="https://www.pinterest.com/pin/..."><button class="btn-paste" data-input="pinterestUrl">📋 لصق</button><button data-platform="pinterest">📲 تحميل</button></div><div id="pinterestLoading" class="loading"></div><div id="pinterestResult" class="result"></div><div id="pinterestError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div><
