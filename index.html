@@ -12,7 +12,75 @@
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: -1; }
         body { font-family: 'Cairo', sans-serif; color: #eef5ff; min-height: 100vh; position: relative; }
         
-        /* شاشة التحقق الأولية */
+        /* شاشة التحقق من Cloudflare */
+        .cf-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.5s ease;
+        }
+        .cf-screen.hidden {
+            display: none;
+        }
+        .cf-card {
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            padding: 2rem;
+            background: rgba(15, 25, 45, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            border: 1px solid rgba(37, 244, 238, 0.2);
+        }
+        .cf-icon {
+            font-size: 4rem;
+            color: #25f4ee;
+            margin-bottom: 1rem;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        .cf-card h2 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .cf-card p {
+            color: #aaa;
+            margin-bottom: 1.5rem;
+            font-size: 0.8rem;
+        }
+        .cf-progress {
+            width: 100%;
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        .cf-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #25f4ee, #ff0050);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .cf-status {
+            color: #25f4ee;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        /* شاشة تسجيل الدخول */
         .auth-screen {
             position: fixed;
             top: 0;
@@ -21,7 +89,7 @@
             height: 100%;
             background: rgba(0,0,0,0.95);
             backdrop-filter: blur(20px);
-            z-index: 3000;
+            z-index: 9000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -53,13 +121,13 @@
         .user-info span { color: white; }
         .user-info button { background: #ff0050; border: none; padding: 4px 10px; border-radius: 50px; color: white; cursor: pointer; font-size: 11px; }
         
-        .menu-btn { position: fixed; top: 20px; right: 20px; background: #ff0050; color: white; border: none; border-radius: 50px; padding: 8px 14px; cursor: pointer; font-size: 16px; z-index: 1001; transition: 0.3s; }
+        .menu-btn { position: fixed; top: 20px; right: 20px; background: #ff0050; color: white; border: none; border-radius: 50px; padding: 8px 14px; cursor: pointer; font-size: 16px; z-index: 1001; }
         .menu-btn:hover { background: #e60046; }
         
         .sidebar { position: fixed; top: 0; right: -300px; width: 260px; height: 100vh; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); z-index: 1000; transition: 0.3s ease; padding: 60px 15px 20px; overflow-y: auto; border-left: 1px solid rgba(255,255,255,0.1); }
         .sidebar.open { right: 0; }
         .sidebar h3 { color: white; text-align: center; margin-bottom: 20px; font-size: 18px; }
-        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; margin: 6px 0; background: rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; transition: 0.3s; color: #ccc; font-weight: bold; font-size: 14px; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; margin: 6px 0; background: rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; color: #ccc; font-weight: bold; font-size: 14px; }
         .nav-item:hover { background: #ff0050; color: white; }
         .nav-item .icon { font-size: 18px; min-width: 30px; }
         
@@ -125,6 +193,21 @@
     <source src="https://cdn.dix.lat/me/d34d1780-619a-4293-b1ad-68d6f0d1d8e9.mp4" type="video/mp4">
 </video>
 <div class="overlay"></div>
+
+<!-- شاشة التحقق من Cloudflare -->
+<div class="cf-screen" id="cfScreen">
+    <div class="cf-card">
+        <div class="cf-icon">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <h2>إجراء التحقق من الأمان</h2>
+        <p>يستخدم هذا الموقع خدمة الحماية من برامج الروبوت الضارة</p>
+        <div class="cf-progress">
+            <div class="cf-progress-bar" id="cfProgressBar"></div>
+        </div>
+        <div class="cf-status" id="cfStatus">جاري التحقق...</div>
+    </div>
+</div>
 
 <!-- شاشة تسجيل الدخول -->
 <div class="auth-screen" id="authScreen">
@@ -198,6 +281,24 @@
     const API_BASE_URL = 'https://s7abow-production-ac06.up.railway.app';
     let currentUser = localStorage.getItem('currentUser');
     let currentUserDownloads = localStorage.getItem('currentUserDownloads') || 0;
+    
+    // شاشة Cloudflare التحقق
+    let progress = 0;
+    const cfInterval = setInterval(() => {
+        progress += 10;
+        document.getElementById('cfProgressBar').style.width = progress + '%';
+        if (progress >= 100) {
+            clearInterval(cfInterval);
+            document.getElementById('cfStatus').innerHTML = '✓ تم التحقق. جاري التوجيه...';
+            setTimeout(() => {
+                document.getElementById('cfScreen').classList.add('hidden');
+            }, 500);
+        } else if (progress === 50) {
+            document.getElementById('cfStatus').innerHTML = '✓ تم التحقق من المتصفح...';
+        } else if (progress === 80) {
+            document.getElementById('cfStatus').innerHTML = '✓ يتم تأكيد الهوية...';
+        }
+    }, 300);
     
     function updateUI() {
         if (currentUser) {
