@@ -584,4 +584,151 @@
 
     <div id="twitterPage" class="download-page"><div class="card"><h1>🐦 تحميل تويتر</h1><div class="input-group"><input type="text" id="twitterUrl" placeholder="https://twitter.com/user/status/..."><button class="btn-paste" data-input="twitterUrl">📋 لصق</button><button data-platform="twitter">📲 تحميل</button></div><div id="twitterLoading" class="loading"></div><div id="twitterResult" class="result"></div><div id="twitterError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
 
-    <div id="pinterestPage" class="download-page"><div class="card"><h1>📌 تحميل بينترست</h1><div class="input-group"><input type="text" id="pinterestUrl" placeholder="https://www.pinterest.com/pin/..."><button class="btn-paste" data-input="pinterestUrl">📋 لصق</button><button data-platform="pinterest">📲 تحميل</button></div><div id="pinterestLoading" class="loading"></div><div id="pinterestResult" class="result"></div><div id="pinterestError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div><
+    <div id="pinterestPage" class="download-page"><div class="card"><h1>📌 تحميل بينترست</h1><div class="input-group"><input type="text" id="pinterestUrl" placeholder="https://www.pinterest.com/pin/..."><button class="btn-paste" data-input="pinterestUrl">📋 لصق</button><button data-platform="pinterest">📲 تحميل</button></div><div id="pinterestLoading" class="loading"></div><div id="pinterestResult" class="result"></div><div id="pinterestError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+</div>
+
+<script>
+    const API_BASE_URL = 'https://s7abow-production.up.railway.app';
+    
+    // فتح/غلق القائمة
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    
+    menuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
+    
+    // إغلاق القائمة عند الضغط خارجها
+    document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !menuBtn.contains(e.target) && sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+        }
+    });
+    
+    // التنقل بين الصفحات
+    function goToHome() {
+        document.getElementById('homePage').style.display = 'block';
+        document.querySelectorAll('.download-page').forEach(page => {
+            page.classList.remove('active');
+        });
+        sidebar.classList.remove('open');
+    }
+    
+    function goToPage(pageId) {
+        document.getElementById('homePage').style.display = 'none';
+        document.querySelectorAll('.download-page').forEach(page => {
+            page.classList.remove('active');
+        });
+        document.getElementById(pageId + 'Page').classList.add('active');
+        sidebar.classList.remove('open');
+    }
+    
+    // ربط أزرار القائمة
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const pageId = item.getAttribute('data-page');
+            if (pageId === 'home') {
+                goToHome();
+            } else {
+                goToPage(pageId);
+            }
+        });
+    });
+    
+    // دوال التحميل
+    async function pasteToInput(inputId) {
+        try {
+            const text = await navigator.clipboard.readText();
+            document.getElementById(inputId).value = text;
+            showToast('✅ تم لصق الرابط', '#4caf50');
+        } catch(err) {
+            showToast('❌ فشل اللصق', '#f44336');
+        }
+    }
+    
+    function showToast(msg, bgColor) {
+        const div = document.createElement('div');
+        div.textContent = msg;
+        div.style.cssText = `position:fixed;bottom:20px;left:20px;background:${bgColor};color:white;padding:12px 24px;border-radius:50px;z-index:9999;font-weight:bold;`;
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 2500);
+    }
+    
+    async function downloadMedia(platform, mediaType = 'video') {
+        const urlInput = document.getElementById(`${platform}Url`);
+        const url = urlInput?.value.trim();
+        if (!url) {
+            showError(platform, 'الرجاء إدخال رابط صحيح');
+            return;
+        }
+        
+        showLoading(platform, true);
+        hideResult(platform);
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/download`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url, type: mediaType })
+            });
+            const data = await response.json();
+            if (!data.success) throw new Error(data.error || 'فشل التحميل');
+            displayResult(platform, data);
+        } catch(error) {
+            showError(platform, error.message);
+        } finally {
+            showLoading(platform, false);
+        }
+    }
+    
+    function displayResult(platform, data) {
+        const resultDiv = document.getElementById(`${platform}Result`);
+        resultDiv.innerHTML = `
+            ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:15px; margin-bottom:15px;">` : ''}
+            <h3 style="color:white;">${data.title || 'محتوى'}</h3>
+            ${data.author ? `<p style="color:#aaa;">👤 ${data.author}</p>` : ''}
+            <a href="${data.download_url || data.video_url}" class="download-btn" download>📥 تحميل</a>
+        `;
+        resultDiv.style.display = 'block';
+    }
+    
+    function showLoading(platform, show) {
+        const loader = document.getElementById(`${platform}Loading`);
+        if (loader) loader.style.display = show ? 'block' : 'none';
+    }
+    
+    function showError(platform, msg) {
+        const errDiv = document.getElementById(`${platform}Error`);
+        if (errDiv) {
+            errDiv.textContent = msg;
+            errDiv.style.display = 'block';
+            setTimeout(() => errDiv.style.display = 'none', 5000);
+        }
+    }
+    
+    function hideResult(platform) {
+        const resDiv = document.getElementById(`${platform}Result`);
+        if (resDiv) {
+            resDiv.style.display = 'none';
+            resDiv.innerHTML = '';
+        }
+    }
+    
+    // ربط الأزرار
+    document.querySelectorAll('.btn-paste').forEach(btn => {
+        btn.addEventListener('click', () => pasteToInput(btn.getAttribute('data-input')));
+    });
+    
+    document.querySelectorAll('button[data-platform]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const platform = btn.getAttribute('data-platform');
+            const mediaType = btn.getAttribute('data-type') || 'video';
+            downloadMedia(platform, mediaType);
+        });
+    });
+    
+    // إظهار الصفحة الرئيسية أولاً
+    document.getElementById('homePage').style.display = 'block';
+</script>
+</body>
+</html>
