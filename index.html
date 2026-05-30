@@ -531,59 +531,24 @@
             </div>
         </div>
         <div class="channel-section">
-            <div class="section-title" style="justify-content: center;"><i class="fab fa-telegram"></i> My Channel</div>
+            <div class="section-title" style="justify-content: center;"><i class="fab fa-whatsapp"></i> My WhatsApp Channel</div>
             <div class="channel-box">
-                <div class="channel-icon"><i class="fab fa-telegram"></i></div>
-                <h3>s7abow</h3>
+                <div class="channel-icon"><i class="fab fa-whatsapp"></i></div>
+                <h3>⌗ sһᥲძ᥆ᥕ ძ᥆𝗍</h3>
                 <div class="channel-desc">أحدث الشروحات، أكواد البوتات، وأخبار التقنية</div>
-                <a href="https://t.me/anya_boteta" target="_blank" class="channel-link"><i class="fab fa-telegram-plane"></i> انضم إلى القناة <i class="fas fa-arrow-left"></i></a>
+                <a href="https://whatsapp.com/channel/0029Vb7Xe9q9Bb64VJAGVA38" target="_blank" class="channel-link"><i class="fab fa-whatsapp"></i> انضم إلى القناة <i class="fas fa-arrow-left"></i></a>
             </div>
         </div>
         <div class="footer-note"><i class="fas fa-code"></i> Full Stack & Bot Engineer | مطور محترف</div>
     </div>
 
-    <!-- صفحات التحميل -->
-    <div id="youtubePage" class="download-page">
-        <div class="card">
-            <h1>▶️ تحميل يوتيوب</h1>
-            <div class="sub">فيديو بجودة عالية أو MP3</div>
-            <div class="input-group">
-                <input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=...">
-                <button class="btn-paste" data-input="youtubeUrl">📋 لصق</button>
-                <button data-platform="youtube" data-type="video">📲 تحميل فيديو</button>
-                <button data-platform="youtube" data-type="audio" style="background:#25f4ee;color:#000;">🎵 تحميل صوت</button>
-            </div>
-            <div id="youtubeLoading" class="loading">⏳ جاري...</div>
-            <div id="youtubeResult" class="result"></div>
-            <div id="youtubeError" class="error"></div>
-            <div class="back-home" onclick="goToHome()">← العودة للرئيسية</div>
-        </div>
-    </div>
-
-    <div id="tiktokPage" class="download-page">
-        <div class="card">
-            <h1>🎵 تحميل تيك توك</h1>
-            <div class="input-group">
-                <input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/...">
-                <button class="btn-paste" data-input="tiktokUrl">📋 لصق</button>
-                <button data-platform="tiktok">📲 تحميل</button>
-            </div>
-            <div id="tiktokLoading" class="loading">⏳ جاري...</div>
-            <div id="tiktokResult" class="result"></div>
-            <div id="tiktokError" class="error"></div>
-            <div class="back-home" onclick="goToHome()">← العودة للرئيسية</div>
-        </div>
-    </div>
-
-    <!-- بنفس الطريقة لباقي المنصات... -->
+    <!-- صفحات التحميل (مختصرة) -->
+    <div id="youtubePage" class="download-page"><div class="card"><h1>▶️ تحميل يوتيوب</h1><div class="sub">فيديو بجودة عالية أو MP3</div><div class="input-group"><input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=..."><button class="btn-paste" data-input="youtubeUrl">📋 لصق</button><button data-platform="youtube" data-type="video">📲 تحميل فيديو</button><button data-platform="youtube" data-type="audio" style="background:#25f4ee;color:#000;">🎵 تحميل صوت</button></div><div id="youtubeLoading" class="loading">⏳ جاري...</div><div id="youtubeResult" class="result"></div><div id="youtubeError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+    <div id="tiktokPage" class="download-page"><div class="card"><h1>🎵 تحميل تيك توك</h1><div class="input-group"><input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/..."><button class="btn-paste" data-input="tiktokUrl">📋 لصق</button><button data-platform="tiktok">📲 تحميل</button></div><div id="tiktokLoading" class="loading"></div><div id="tiktokResult" class="result"></div><div id="tiktokError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
     <div id="instagramPage" class="download-page"><div class="card"><h1>📸 تحميل انستقرام</h1><div class="input-group"><input type="text" id="instagramUrl" placeholder="https://www.instagram.com/p/..."><button class="btn-paste" data-input="instagramUrl">📋 لصق</button><button data-platform="instagram">📲 تحميل</button></div><div id="instagramLoading" class="loading"></div><div id="instagramResult" class="result"></div><div id="instagramError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
-
     <div id="spotifyPage" class="download-page"><div class="card"><h1>🎧 تحميل سبوتيفاي</h1><div class="input-group"><input type="text" id="spotifyUrl" placeholder="https://open.spotify.com/track/..."><button class="btn-paste" data-input="spotifyUrl">📋 لصق</button><button data-platform="spotify">📲 تحميل</button></div><div id="spotifyLoading" class="loading"></div><div id="spotifyResult" class="result"></div><div id="spotifyError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
-
     <div id="facebookPage" class="download-page"><div class="card"><h1>🔵 تحميل فيسبوك</h1><div class="input-group"><input type="text" id="facebookUrl" placeholder="https://www.facebook.com/.../videos/..."><button class="btn-paste" data-input="facebookUrl">📋 لصق</button><button data-platform="facebook">📲 تحميل</button></div><div id="facebookLoading" class="loading"></div><div id="facebookResult" class="result"></div><div id="facebookError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
-
     <div id="twitterPage" class="download-page"><div class="card"><h1>🐦 تحميل تويتر</h1><div class="input-group"><input type="text" id="twitterUrl" placeholder="https://twitter.com/user/status/..."><button class="btn-paste" data-input="twitterUrl">📋 لصق</button><button data-platform="twitter">📲 تحميل</button></div><div id="twitterLoading" class="loading"></div><div id="twitterResult" class="result"></div><div id="twitterError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
-
     <div id="pinterestPage" class="download-page"><div class="card"><h1>📌 تحميل بينترست</h1><div class="input-group"><input type="text" id="pinterestUrl" placeholder="https://www.pinterest.com/pin/..."><button class="btn-paste" data-input="pinterestUrl">📋 لصق</button><button data-platform="pinterest">📲 تحميل</button></div><div id="pinterestLoading" class="loading"></div><div id="pinterestResult" class="result"></div><div id="pinterestError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
 </div>
 
@@ -594,13 +559,16 @@
     const menuBtn = document.getElementById('menuBtn');
     const sidebar = document.getElementById('sidebar');
     
-    menuBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-    });
+    if (menuBtn) {
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('open');
+        });
+    }
     
     // إغلاق القائمة عند الضغط خارجها
     document.addEventListener('click', (e) => {
-        if (!sidebar.contains(e.target) && !menuBtn.contains(e.target) && sidebar.classList.contains('open')) {
+        if (sidebar && !sidebar.contains(e.target) && !menuBtn.contains(e.target) && sidebar.classList.contains('open')) {
             sidebar.classList.remove('open');
         }
     });
@@ -611,7 +579,7 @@
         document.querySelectorAll('.download-page').forEach(page => {
             page.classList.remove('active');
         });
-        sidebar.classList.remove('open');
+        if (sidebar) sidebar.classList.remove('open');
     }
     
     function goToPage(pageId) {
@@ -620,7 +588,7 @@
             page.classList.remove('active');
         });
         document.getElementById(pageId + 'Page').classList.add('active');
-        sidebar.classList.remove('open');
+        if (sidebar) sidebar.classList.remove('open');
     }
     
     // ربط أزرار القائمة
