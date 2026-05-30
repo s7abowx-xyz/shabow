@@ -9,124 +9,67 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         .video-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: -1; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: -1; }
         body { font-family: 'Cairo', sans-serif; color: #eef5ff; min-height: 100vh; position: relative; }
         
-        .cf-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.5s ease;
-        }
-        .cf-screen.hidden { display: none; }
-        .cf-card { text-align: center; max-width: 400px; width: 90%; padding: 2rem; background: rgba(15, 25, 45, 0.6); backdrop-filter: blur(20px); border-radius: 2rem; border: 1px solid rgba(37, 244, 238, 0.2); }
-        .cf-icon { font-size: 4rem; color: #25f4ee; margin-bottom: 1rem; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.05)} }
-        .cf-card h2 { color: white; font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .cf-card p { color: #aaa; margin-bottom: 1.5rem; font-size: 0.8rem; }
-        .cf-progress { width: 100%; height: 3px; background: rgba(255,255,255,0.1); border-radius: 3px; margin: 1.5rem 0; overflow: hidden; }
-        .cf-progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #25f4ee, #ff0050); border-radius: 3px; transition: width 0.3s ease; }
-        .cf-status { color: #25f4ee; font-size: 0.8rem; margin-top: 1rem; }
+        .menu-btn { position: fixed; top: 20px; right: 20px; background: #ff0050; color: white; border: none; border-radius: 50px; padding: 12px 18px; cursor: pointer; font-size: 20px; z-index: 1001; transition: 0.3s; }
+        .menu-btn:hover { background: #e60046; transform: scale(1.05); }
         
-        .auth-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(20px);
-            z-index: 9000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .auth-screen.hidden { display: none; }
-        .auth-card { background: rgba(18, 25, 45, 0.95); backdrop-filter: blur(14px); border-radius: 2rem; padding: 2rem; max-width: 400px; width: 90%; border: 1px solid rgba(72, 187, 255, 0.3); text-align: center; }
-        .auth-card h2 { font-size: 1.8rem; margin-bottom: 0.5rem; background: linear-gradient(120deg, #fff, #7ac7ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .auth-card .sub { color: #aaa; margin-bottom: 1.5rem; font-size: 0.8rem; }
-        .auth-card input { width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 50px; background: rgba(255,255,255,0.9); outline: none; }
-        .auth-card button { width: 100%; padding: 12px; margin-top: 1rem; background: #ff0050; border: none; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; }
-        .auth-card button:hover { background: #e60046; }
-        .auth-link { margin-top: 1rem; color: #25f4ee; cursor: pointer; }
-        
-        .main-app { display: none; }
-        .main-app.visible { display: block; }
-        
-        .user-info { position: fixed; top: 20px; left: 20px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 50px; z-index: 1001; display: flex; gap: 8px; align-items: center; font-size: 12px; }
-        .user-info span { color: white; }
-        .user-info button { background: #ff0050; border: none; padding: 4px 10px; border-radius: 50px; color: white; cursor: pointer; font-size: 11px; }
-        .menu-btn { position: fixed; top: 20px; right: 20px; background: #ff0050; color: white; border: none; border-radius: 50px; padding: 8px 14px; cursor: pointer; font-size: 16px; z-index: 1001; }
-        .menu-btn:hover { background: #e60046; }
-        
-        .sidebar { position: fixed; top: 0; right: -300px; width: 260px; height: 100vh; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); z-index: 1000; transition: 0.3s ease; padding: 60px 15px 20px; overflow-y: auto; border-left: 1px solid rgba(255,255,255,0.1); }
+        .sidebar { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); z-index: 1000; transition: 0.3s ease; padding: 70px 20px 20px; overflow-y: auto; border-left: 1px solid rgba(255,255,255,0.1); }
         .sidebar.open { right: 0; }
-        .sidebar h3 { color: white; text-align: center; margin-bottom: 20px; font-size: 18px; }
-        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; margin: 6px 0; background: rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; color: #ccc; font-weight: bold; font-size: 14px; }
-        .nav-item:hover { background: #ff0050; color: white; }
-        .nav-item .icon { font-size: 18px; min-width: 30px; }
+        .sidebar h3 { color: white; text-align: center; margin-bottom: 25px; font-size: 22px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; margin: 8px 0; background: rgba(255,255,255,0.08); border-radius: 12px; cursor: pointer; transition: 0.3s; color: #ccc; font-weight: bold; }
+        .nav-item:hover { background: #ff0050; color: white; transform: translateX(-5px); }
+        .nav-item .icon { font-size: 22px; min-width: 35px; }
         
-        .main-content { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+        .main-content { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1.5rem; }
         
-        .portfolio-card { max-width: 500px; width: 100%; background: rgba(18, 25, 45, 0.7); backdrop-filter: blur(14px); border-radius: 2rem; border: 1px solid rgba(72, 187, 255, 0.25); overflow: hidden; }
-        .avatar-section { text-align: center; padding-top: 1.5rem; }
-        .avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px solid #7ce4ff; }
-        .header-glow { padding: 0.5rem 1.5rem 1rem; text-align: center; }
-        .badge-dev { display: inline-block; background: rgba(0, 255, 255, 0.12); padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.7rem; font-weight: 700; color: #7ce4ff; border: 1px solid rgba(0, 255, 255, 0.45); margin-bottom: 0.8rem; }
-        h1 { font-size: 2rem; font-weight: 800; background: linear-gradient(120deg, #ffffff, #7ac7ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .sub-role { font-size: 0.9rem; font-weight: 500; color: #cae3ff; background: rgba(255,255,255,0.05); display: inline-block; padding: 0.2rem 1rem; border-radius: 60px; margin-top: 0.3rem; }
-        .social-row { display: flex; justify-content: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
-        .contact-btn { background: rgba(15, 25, 45, 0.85); backdrop-filter: blur(8px); border-radius: 60px; padding: 0.4rem 1.2rem; display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 0.8rem; border: 1px solid rgba(100, 200, 255, 0.4); color: #eef5ff; text-decoration: none; }
-        .skills-section { padding: 1rem 1.5rem; border-bottom: 1px solid rgba(72, 187, 255, 0.2); }
-        .section-title { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem; color: #d6f0ff; }
-        .skills-grid { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-        .skill-pill { background: rgba(0, 30, 50, 0.7); backdrop-filter: blur(4px); padding: 0.3rem 1rem; border-radius: 40px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(0, 255, 255, 0.25); font-size: 0.8rem; }
-        .channel-section { padding: 1rem 1.5rem 1.5rem; text-align: center; }
-        .channel-box { background: linear-gradient(125deg, #0e1a2e, #091222); border-radius: 1.5rem; padding: 1rem; border: 1px solid rgba(0, 230, 250, 0.35); }
-        .channel-icon { font-size: 1.8rem; color: #57c7ff; margin-bottom: 0.5rem; }
-        .channel-box h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem; background: linear-gradient(135deg, #fff, #a0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .channel-desc { font-size: 0.7rem; color: #bbd4ff; margin-bottom: 0.8rem; }
-        .channel-link { display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 255, 255, 0.08); padding: 0.4rem 1.2rem; border-radius: 60px; text-decoration: none; color: #cdf2ff; font-weight: 600; font-size: 0.8rem; border: 1px solid #2ea0c0; }
-        .footer-note { text-align: center; padding: 0.8rem; font-size: 0.6rem; color: #7c9ed6; border-top: 1px solid rgba(72, 187, 255, 0.15); }
+        .portfolio-card { max-width: 560px; width: 100%; background: rgba(18, 25, 45, 0.7); backdrop-filter: blur(14px); border-radius: 3rem; border: 1px solid rgba(72, 187, 255, 0.25); overflow: hidden; transition: transform 0.25s ease; }
+        .portfolio-card:hover { transform: translateY(-6px); }
+        .avatar-section { text-align: center; padding-top: 2rem; }
+        .avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #7ce4ff; box-shadow: 0 0 20px rgba(0, 200, 255, 0.4); }
+        .header-glow { padding: 0.75rem 1.8rem 1.5rem; text-align: center; }
+        .badge-dev { display: inline-block; background: rgba(0, 255, 255, 0.12); padding: 0.3rem 1.2rem; border-radius: 40px; font-size: 0.75rem; font-weight: 700; color: #7ce4ff; border: 1px solid rgba(0, 255, 255, 0.45); margin-bottom: 1rem; }
+        h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(120deg, #ffffff, #7ac7ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .sub-role { font-size: 1.1rem; font-weight: 500; color: #cae3ff; background: rgba(255,255,255,0.05); display: inline-block; padding: 0.25rem 1.2rem; border-radius: 60px; margin-top: 0.4rem; }
+        .fullstack-tagline { text-align: center; margin-top: 1rem; font-size: 0.95rem; font-weight: 500; color: #b4d0ff; display: flex; align-items: center; justify-content: center; gap: 0.6rem; flex-wrap: wrap; }
+        .social-row { display: flex; justify-content: center; gap: 2rem; margin: 1.6rem 0 1rem; flex-wrap: wrap; }
+        .contact-btn { background: rgba(15, 25, 45, 0.85); backdrop-filter: blur(8px); border-radius: 60px; padding: 0.7rem 1.9rem; display: inline-flex; align-items: center; gap: 0.7rem; font-weight: 700; font-size: 1rem; border: 1px solid rgba(100, 200, 255, 0.4); transition: all 0.2s; color: #eef5ff; text-decoration: none; }
+        .contact-btn.telegram:hover { background: #1f6f8f; }
+        .contact-btn.whatsapp:hover { background: #1f8f4e; }
+        .skills-section { padding: 1.6rem 1.8rem; border-bottom: 1px solid rgba(72, 187, 255, 0.2); }
+        .section-title { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.2rem; color: #d6f0ff; }
+        .section-title i { font-size: 1.3rem; color: #5bc0ff; }
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+        .skill-pill { background: rgba(0, 30, 50, 0.7); backdrop-filter: blur(4px); padding: 0.5rem 1.3rem; border-radius: 40px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(0, 255, 255, 0.25); font-size: 0.95rem; }
+        .skill-pill i { font-size: 1.1rem; color: #7ad0ff; }
+        .channel-section { padding: 1.6rem 1.8rem 2rem; text-align: center; }
+        .channel-box { background: linear-gradient(125deg, #0e1a2e, #091222); border-radius: 2rem; padding: 1.5rem 1rem; border: 1px solid rgba(0, 230, 250, 0.35); }
+        .channel-icon { font-size: 2.2rem; color: #57c7ff; margin-bottom: 0.7rem; }
+        .channel-box h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #fff, #a0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .channel-link { display: inline-flex; align-items: center; gap: 10px; background: rgba(0, 255, 255, 0.08); padding: 0.7rem 1.6rem; border-radius: 60px; text-decoration: none; color: #cdf2ff; font-weight: 600; border: 1px solid #2ea0c0; transition: 0.2s; }
+        .footer-note { text-align: center; padding: 1rem; font-size: 0.7rem; color: #7c9ed6; border-top: 1px solid rgba(72, 187, 255, 0.15); }
         
-        .download-page, .admin-page, .api-page { display: none; max-width: 600px; width: 100%; margin: 0 auto; }
-        .download-page.active, .admin-page.active, .api-page.active { display: block; }
-        .card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 1.5rem; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.2); }
-        .card h1 { font-size: 1.5rem; text-align: center; margin-bottom: 0.5rem; }
-        .card .sub { color: #aaa; text-align: center; margin-bottom: 1rem; font-size: 0.7rem; }
-        .input-group { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
-        .input-group input { flex: 1; padding: 8px 12px; border: none; border-radius: 50px; font-size: 12px; background: white; outline: none; }
-        .input-group button { padding: 8px 14px; background: #ff0050; color: white; border: none; border-radius: 50px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .download-page { display: none; max-width: 700px; width: 100%; margin: 0 auto; }
+        .download-page.active { display: block; }
+        .card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 25px; padding: 35px; border: 1px solid rgba(255,255,255,0.2); }
+        .card h1 { font-size: 28px; text-align: center; margin-bottom: 8px; }
+        .card .sub { color: #aaa; text-align: center; margin-bottom: 25px; font-size: 14px; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .input-group input { flex: 1; padding: 14px 18px; border: none; border-radius: 50px; font-size: 15px; background: white; outline: none; }
+        .input-group button { padding: 14px 22px; background: #ff0050; color: white; border: none; border-radius: 50px; font-size: 15px; cursor: pointer; font-weight: bold; }
         .btn-paste { background: #25f4ee !important; color: #000 !important; }
-        .result { display: none; margin-top: 1rem; background: rgba(0,0,0,0.5); border-radius: 1rem; padding: 1rem; }
-        .loading { display: none; text-align: center; color: white; margin: 1rem 0; font-size: 12px; }
-        .error { color: #ff6b6b; text-align: center; margin-top: 0.8rem; display: none; font-size: 12px; }
-        .download-btn { display: inline-block; background: #25f4ee; color: #000; padding: 6px 14px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 12px; margin-top: 10px; }
-        .back-home { display: block; text-align: center; margin-top: 1rem; color: #25f4ee; cursor: pointer; font-size: 12px; }
+        .result { display: none; margin-top: 25px; background: rgba(0,0,0,0.5); border-radius: 20px; padding: 20px; }
+        .loading { display: none; text-align: center; color: white; margin: 20px 0; }
+        .error { color: #ff6b6b; text-align: center; margin-top: 15px; display: none; }
+        .download-btn { display: inline-block; background: #25f4ee; color: #000; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 15px; }
+        .back-home { display: block; text-align: center; margin-top: 20px; color: #25f4ee; cursor: pointer; text-decoration: none; }
         
-        .toggle-switch { display: flex; justify-content: space-between; align-items: center; padding: 8px; margin: 6px 0; background: rgba(0,0,0,0.3); border-radius: 40px; font-size: 12px; }
-        .toggle-switch input { width: 40px; height: 20px; appearance: none; background: #ccc; border-radius: 20px; position: relative; cursor: pointer; }
-        .toggle-switch input:checked { background: #25f4ee; }
-        .toggle-switch input::before { content: ''; width: 16px; height: 16px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: 0.3s; }
-        .toggle-switch input:checked::before { left: 22px; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0; }
-        .stat-card { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 15px; text-align: center; }
-        .stat-card h3 { font-size: 1.3rem; color: #25f4ee; }
-        .stat-card p { font-size: 10px; }
-        
-        .api-code { background: #0a0a1a; padding: 10px; border-radius: 12px; margin: 10px 0; direction: ltr; text-align: left; overflow-x: auto; }
-        .api-code pre { color: #7ce4ff; font-family: monospace; font-size: 10px; }
-        .copy-btn { background: #25f4ee; color: #000; border: none; padding: 3px 8px; border-radius: 50px; cursor: pointer; font-size: 10px; margin-top: 6px; }
-        
-        @media (max-width: 480px) { .portfolio-card { border-radius: 1.5rem; } .avatar { width: 70px; height: 70px; } h1 { font-size: 1.5rem; } }
+        @media (max-width: 480px) {
+            .portfolio-card { border-radius: 2rem; }
+            h1 { font-size: 2rem; }
+            .avatar { width: 95px; height: 95px; }
+        }
     </style>
 </head>
 <body>
@@ -136,204 +79,136 @@
 </video>
 <div class="overlay"></div>
 
-<div class="cf-screen" id="cfScreen">
-    <div class="cf-card">
-        <div class="cf-icon"><i class="fas fa-shield-alt"></i></div>
-        <h2>إجراء التحقق من الأمان</h2>
-        <p>يستخدم هذا الموقع خدمة الحماية من برامج الروبوت الضارة</p>
-        <div class="cf-progress"><div class="cf-progress-bar" id="cfProgressBar"></div></div>
-        <div class="cf-status" id="cfStatus">جاري التحقق...</div>
-    </div>
+<button class="menu-btn" id="menuBtn">☰</button>
+
+<div class="sidebar" id="sidebar">
+    <h3>📥 المنصات</h3>
+    <div class="nav-item" data-page="home"><span class="icon">🏠</span><span>الرئيسية</span></div>
+    <div class="nav-item" data-page="youtube"><span class="icon">▶️</span><span>يوتيوب</span></div>
+    <div class="nav-item" data-page="tiktok"><span class="icon">🎵</span><span>تيك توك</span></div>
+    <div class="nav-item" data-page="instagram"><span class="icon">📸</span><span>انستقرام</span></div>
+    <div class="nav-item" data-page="spotify"><span class="icon">🎧</span><span>سبوتيفاي</span></div>
+    <div class="nav-item" data-page="facebook"><span class="icon">🔵</span><span>فيسبوك</span></div>
+    <div class="nav-item" data-page="twitter"><span class="icon">🐦</span><span>تويتر</span></div>
+    <div class="nav-item" data-page="pinterest"><span class="icon">📌</span><span>بينترست</span></div>
 </div>
 
-<div class="auth-screen" id="authScreen">
-    <div class="auth-card">
-        <h2>✨ s7abow ✨</h2>
-        <div class="sub">منصة تحميل الفيديوهات من جميع المنصات</div>
-        <div id="loginForm">
-            <input type="text" id="loginUsername" placeholder="اسم المستخدم">
-            <input type="password" id="loginPassword" placeholder="كلمة المرور">
-            <button onclick="login()">تسجيل الدخول</button>
-            <div class="auth-link" onclick="showRegisterForm()">ليس لديك حساب؟ إنشاء حساب جديد</div>
+<div class="main-content" id="mainContent">
+    <div id="homePage" class="portfolio-card">
+        <div class="avatar-section">
+            <img class="avatar" src="https://cdn.dix.lat/me/33482beb-b9aa-4b4f-ac01-b7ffa40aea75.jpg" alt="s7abow">
         </div>
-        <div id="registerForm" style="display: none;">
-            <input type="text" id="regUsername" placeholder="اسم المستخدم">
-            <input type="password" id="regPassword" placeholder="كلمة المرور">
-            <button onclick="register()">إنشاء حساب</button>
-            <div class="auth-link" onclick="showLoginForm()">لديك حساب؟ تسجيل الدخول</div>
+        <div class="header-glow">
+            <div class="badge-dev"><i class="fas fa-code"></i> s7abow</div>
+            <h1>s7abow</h1>
+            <div class="sub-role"><i class="fas fa-robot"></i> مطور وبات وتساب</div>
+            <div class="fullstack-tagline"><i class="fas fa-globe"></i> Full Stack Web <span>|</span> <i class="fab fa-bots"></i> Bot Engineer</div>
         </div>
+        <div class="social-row">
+            <a href="https://t.me/K_S_m_Mark" target="_blank" class="contact-btn telegram"><i class="fab fa-telegram-plane"></i> Telegram</a>
+            <a href="https://wa.me/201017274961" target="_blank" class="contact-btn whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
+        <div class="skills-section">
+            <div class="section-title"><i class="fas fa-cog"></i> <span>My Skills</span></div>
+            <div class="skills-grid">
+                <div class="skill-pill"><i class="fab fa-js"></i> JavaScript</div>
+                <div class="skill-pill"><i class="fab fa-python"></i> Python</div>
+                <div class="skill-pill"><i class="fab fa-html5"></i> HTML <i class="fab fa-css3-alt"></i> & CSS</div>
+                <div class="skill-pill"><i class="fas fa-database"></i> MongoDB</div>
+                <div class="skill-pill"><i class="fab fa-node-js"></i> Node.js</div>
+                <div class="skill-pill"><i class="fas fa-code-branch"></i> Bot API</div>
+            </div>
+        </div>
+        <div class="channel-section">
+            <div class="section-title" style="justify-content: center;"><i class="fab fa-whatsapp"></i> My WhatsApp Channel</div>
+            <div class="channel-box">
+                <div class="channel-icon"><i class="fab fa-whatsapp"></i></div>
+                <h3>⌗ sһᥲძ᥆w ძ᥆𝗍</h3>
+                <div class="channel-desc">أحدث الشروحات، أكواد البوتات، وأخبار التقنية</div>
+                <a href="https://whatsapp.com/channel/0029Vb7Xe9q9Bb64VJAGVA38" target="_blank" class="channel-link"><i class="fab fa-whatsapp"></i> انضم إلى القناة <i class="fas fa-arrow-left"></i></a>
+            </div>
+        </div>
+        <div class="footer-note"><i class="fas fa-code"></i> Full Stack & Bot Engineer | مطور محترف</div>
     </div>
-</div>
 
-<div class="main-app" id="mainApp">
-    <div class="user-info" id="userInfo">
-        <span><i class="fas fa-user"></i> <span id="userName"></span></span>
-        <span id="userDownloads"></span>
-        <button onclick="logout()">خروج</button>
-    </div>
-    <button class="menu-btn" id="menuBtn">☰</button>
-    
-    <div class="sidebar" id="sidebar">
-        <h3>📥 المنصات</h3>
-        <div class="nav-item" data-page="home"><span class="icon">🏠</span><span>الرئيسية</span></div>
-        <div class="nav-item" data-page="youtube"><span class="icon">▶️</span><span>يوتيوب</span></div>
-        <div class="nav-item" data-page="tiktok"><span class="icon">🎵</span><span>تيك توك</span></div>
-        <div class="nav-item" data-page="instagram"><span class="icon">📸</span><span>انستقرام</span></div>
-        <div class="nav-item" data-page="spotify"><span class="icon">🎧</span><span>سبوتيفاي</span></div>
-        <div class="nav-item" data-page="facebook"><span class="icon">🔵</span><span>فيسبوك</span></div>
-        <div class="nav-item" data-page="twitter"><span class="icon">🐦</span><span>تويتر</span></div>
-        <div class="nav-item" data-page="pinterest"><span class="icon">📌</span><span>بينترست</span></div>
-        <div class="nav-item" data-page="api"><span class="icon">🤖</span><span>API للبوتات</span></div>
-        <div class="nav-item" data-page="admin"><span class="icon">⚙️</span><span>لوحة المطور</span></div>
-    </div>
-    
-    <div class="main-content" id="mainContent">
-        <div id="homePage" class="portfolio-card">
-            <div class="avatar-section"><img class="avatar" src="https://cdn.dix.lat/me/33482beb-b9aa-4b4f-ac01-b7ffa40aea75.jpg" alt="s7abow"></div>
-            <div class="header-glow"><div class="badge-dev"><i class="fas fa-code"></i> s7abow</div><h1>s7abow</h1><div class="sub-role"><i class="fas fa-robot"></i> مطور وبات وتساب</div></div>
-            <div class="social-row"><a href="https://t.me/K_S_m_Mark" target="_blank" class="contact-btn telegram"><i class="fab fa-telegram-plane"></i> Telegram</a><a href="https://wa.me/201017274961" target="_blank" class="contact-btn whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a></div>
-            <div class="skills-section"><div class="section-title"><i class="fas fa-cog"></i> <span>My Skills</span></div><div class="skills-grid"><div class="skill-pill"><i class="fab fa-js"></i> JavaScript</div><div class="skill-pill"><i class="fab fa-python"></i> Python</div><div class="skill-pill"><i class="fab fa-html5"></i> HTML & CSS</div><div class="skill-pill"><i class="fas fa-database"></i> MongoDB</div><div class="skill-pill"><i class="fab fa-node-js"></i> Node.js</div><div class="skill-pill"><i class="fas fa-code-branch"></i> Bot API</div></div></div>
-            <div class="channel-section"><div class="channel-box"><div class="channel-icon"><i class="fab fa-whatsapp"></i></div><h3>⌗ sһᥲძ᥆w ძ᥆𝗍</h3><div class="channel-desc">أحدث الشروحات، أكواد البوتات، وأخبار التقنية</div><a href="https://whatsapp.com/channel/0029Vb7Xe9q9Bb64VJAGVA38" target="_blank" class="channel-link"><i class="fab fa-whatsapp"></i> انضم إلى القناة</a></div></div>
-            <div class="footer-note"><i class="fas fa-code"></i> Full Stack & Bot Engineer</div>
-        </div>
-        
-        <div id="youtubePage" class="download-page"><div class="card"><h1>▶️ تحميل يوتيوب</h1><div class="input-group"><input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=..."><button class="btn-paste" data-input="youtubeUrl">📋 لصق</button><button data-platform="youtube" data-type="video">📲 فيديو</button><button data-platform="youtube" data-type="audio" style="background:#25f4ee;color:#000;">🎵 صوت</button></div><div id="youtubeLoading" class="loading"></div><div id="youtubeResult" class="result"></div><div id="youtubeError" class="error"></div><div class="back-home" onclick="goToHome()">← الرئيسية</div></div></div>
-        <div id="tiktokPage" class="download-page"><div class="card"><h1>🎵 تحميل تيك توك</h1><div class="input-group"><input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/..."><button class="btn-paste" data-input="tiktokUrl">📋 لصق</button><button data-platform="tiktok">📲 تحميل</button></div><div id="tiktokLoading" class="loading"></div><div id="tiktokResult" class="result"></div><div id="tiktokError" class="error"></div><div class="back-home" onclick="goToHome()">← الرئيسية</div></div></div>
-        <div id="instagramPage" class="download-page"><div class="card"><h1>📸 تحميل انستقرام</h1><div class="input-group"><input type="text" id="instagramUrl" placeholder="https://www.instagram.com/p/..."><button class="btn-paste" data-input="instagramUrl">📋 لصق</button><button data-platform="instagram">📲 تحميل</button></div><div id="instagramLoading" class="loading"></div><div id="instagramResult" class="result"></div><div id="instagramError" class="error"></div><div class="back-home" onclick="goToHome()">← الرئيسية</div></div></div>
-        <div id="spotifyPage" class="download-page"><div class="card"><h1>🎧 تحميل سبوتيفاي</h1><div class="input-group"><input type="text" id="spotifyUrl" placeholder="https://open.spotify.com/track/..."><button class="btn-paste" data-input="spotifyUrl">📋 لصق</button><button data-platform="spotify">📲 تحميل</button></div><div id="spotifyLoading" class="loading"></div><div id="spotifyResult" class="result"></div><div id="spotifyError" class="error"></div><div class="back-home" onclick="goToHome()">← الرئيسية</div></div></div>
-        <div id="facebookPage" class="download-page"><div class="card"><h1>🔵 تحميل فيسبوك</h1><div class="input-group"><input type="text" id="facebookUrl" placeholder="https://www.facebook.com/.../videos/..."><button class="btn-paste" data-input="facebookUrl">📋 لصق</button><button data-platform="facebook">📲 تحميل</button></div><div id="facebookLoading" class="loading"></div><div id="facebookResult" class="result"></div><div id="facebookError" class="error"></div><div class="back-home" onclick="goToHome()">← الرئيسية</div></div></div>
-        <div id="twitterPage" class="download-page"><div class="card"><h1>🐦 تحميل تويتر</h1><div class="input-group"><input type="text" id="twitterUrl" placeholder="https://twitter.com/user/status/..."><button class="btn-paste" data-input="twitterUrl">📋 لصق</button><button data-platform="twitter">📲 تحميل</button></div><div id="twitterLoading" class="loading"></div><div id="twitterResult" class="result"></div><div id="twitterError" class="error"></div><div class="back-home" onclick="goToHome()">← الرئيسية</div></div></div>
-        <div id="pinterestPage" class="download-page"><div class="card"><h1>📌 تحميل بينترست</h1><div class="input-group"><input type="text" id="pinterestUrl" placeholder="https://www.pinterest.com/pin/..."><button class="btn-paste" data-input="pinterestUrl">📋 لصق</button><button data-platform="pinterest">📲 تحميل</button></div><div id="pinterestLoading" class="loading"></div><div id="pinterestResult" class="result"></div><div id="pinterestError" class="error"></div><div class="back-home" onclick="goToHome()">← الرئيسية</div></div></div>
-        
-        <div id="apiPage" class="api-page"><div class="card"><h1>🤖 API للبوتات</h1><div class="api-code"><pre id="apiUrl">https://s7abow-production-ac06.up.railway.app/download</pre><button class="copy-btn" onclick="copyToClipboard('apiUrl')">📋 نسخ</button></div><div class="back-home" onclick="goToHome()">← الرئيسية</div></div></div>
-        
-        <div id="adminPage" class="admin-page"><div class="card"><h1>⚙️ لوحة المطور</h1><input type="password" id="adminPassword" placeholder="كلمة المرور" style="width:100%; padding:8px; border-radius:50px; margin-bottom:10px;"><button onclick="checkAdminLogin()" style="width:100%; padding:8px;">دخول</button><div id="adminContent" style="display:none; margin-top:15px;"><div class="stats-grid"><div class="stat-card"><h3 id="totalDownloads">0</h3><p>إجمالي التحميلات</p></div><div class="stat-card"><h3 id="totalUsers">0</h3><p>عدد المستخدمين</p></div></div><div id="platformsToggle"></div></div><div class="back-home" onclick="goToHome()">← الرئيسية</div></div></div>
-    </div>
+    <div id="youtubePage" class="download-page"><div class="card"><h1>▶️ تحميل يوتيوب</h1><div class="sub">فيديو بجودة عالية أو MP3</div><div class="input-group"><input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=..."><button class="btn-paste" data-input="youtubeUrl">📋 لصق</button><button data-platform="youtube" data-type="video">📲 تحميل فيديو</button><button data-platform="youtube" data-type="audio" style="background:#25f4ee;color:#000;">🎵 تحميل صوت</button></div><div id="youtubeLoading" class="loading">⏳ جاري...</div><div id="youtubeResult" class="result"></div><div id="youtubeError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+    <div id="tiktokPage" class="download-page"><div class="card"><h1>🎵 تحميل تيك توك</h1><div class="input-group"><input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/..."><button class="btn-paste" data-input="tiktokUrl">📋 لصق</button><button data-platform="tiktok">📲 تحميل</button></div><div id="tiktokLoading" class="loading"></div><div id="tiktokResult" class="result"></div><div id="tiktokError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+    <div id="instagramPage" class="download-page"><div class="card"><h1>📸 تحميل انستقرام</h1><div class="input-group"><input type="text" id="instagramUrl" placeholder="https://www.instagram.com/p/..."><button class="btn-paste" data-input="instagramUrl">📋 لصق</button><button data-platform="instagram">📲 تحميل</button></div><div id="instagramLoading" class="loading"></div><div id="instagramResult" class="result"></div><div id="instagramError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+    <div id="spotifyPage" class="download-page"><div class="card"><h1>🎧 تحميل سبوتيفاي</h1><div class="input-group"><input type="text" id="spotifyUrl" placeholder="https://open.spotify.com/track/..."><button class="btn-paste" data-input="spotifyUrl">📋 لصق</button><button data-platform="spotify">📲 تحميل</button></div><div id="spotifyLoading" class="loading"></div><div id="spotifyResult" class="result"></div><div id="spotifyError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+    <div id="facebookPage" class="download-page"><div class="card"><h1>🔵 تحميل فيسبوك</h1><div class="input-group"><input type="text" id="facebookUrl" placeholder="https://www.facebook.com/.../videos/..."><button class="btn-paste" data-input="facebookUrl">📋 لصق</button><button data-platform="facebook">📲 تحميل</button></div><div id="facebookLoading" class="loading"></div><div id="facebookResult" class="result"></div><div id="facebookError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+    <div id="twitterPage" class="download-page"><div class="card"><h1>🐦 تحميل تويتر</h1><div class="input-group"><input type="text" id="twitterUrl" placeholder="https://twitter.com/user/status/..."><button class="btn-paste" data-input="twitterUrl">📋 لصق</button><button data-platform="twitter">📲 تحميل</button></div><div id="twitterLoading" class="loading"></div><div id="twitterResult" class="result"></div><div id="twitterError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+    <div id="pinterestPage" class="download-page"><div class="card"><h1>📌 تحميل بينترست</h1><div class="input-group"><input type="text" id="pinterestUrl" placeholder="https://www.pinterest.com/pin/..."><button class="btn-paste" data-input="pinterestUrl">📋 لصق</button><button data-platform="pinterest">📲 تحميل</button></div><div id="pinterestLoading" class="loading"></div><div id="pinterestResult" class="result"></div><div id="pinterestError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
 </div>
 
 <script>
+    // ========== الرابط الصحيح للـ API ==========
     const API_BASE_URL = 'https://s7abow-production-ac06.up.railway.app';
-    let currentUser = localStorage.getItem('currentUser');
-    let currentUserDownloads = localStorage.getItem('currentUserDownloads') || 0;
     
-    // شاشة التحقق
-    let progress = 0;
-    const cfInterval = setInterval(() => {
-        progress += 10;
-        document.getElementById('cfProgressBar').style.width = progress + '%';
-        if (progress >= 100) {
-            clearInterval(cfInterval);
-            document.getElementById('cfStatus').innerHTML = '✓ تم التحقق. جاري التوجيه...';
-            setTimeout(() => {
-                document.getElementById('cfScreen').classList.add('hidden');
-            }, 500);
-        } else if (progress === 50) {
-            document.getElementById('cfStatus').innerHTML = '✓ تم التحقق من المتصفح...';
-        } else if (progress === 80) {
-            document.getElementById('cfStatus').innerHTML = '✓ يتم تأكيد الهوية...';
-        }
-    }, 300);
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
     
-    function updateUI() {
-        if (currentUser) {
-            document.getElementById('authScreen').classList.add('hidden');
-            document.getElementById('mainApp').classList.add('visible');
-            document.getElementById('userName').textContent = currentUser;
-            document.getElementById('userDownloads').innerHTML = `<i class="fas fa-download"></i> ${currentUserDownloads}`;
-        } else {
-            document.getElementById('authScreen').classList.remove('hidden');
-            document.getElementById('mainApp').classList.remove('visible');
-        }
+    if (menuBtn) {
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('open');
+        });
     }
     
-    async function login() {
-        const username = document.getElementById('loginUsername').value.trim();
-        const password = document.getElementById('loginPassword').value.trim();
-        
-        if (!username || !password) {
-            showToast('❌ الرجاء ملء جميع الحقول', '#f44336');
-            return;
+    document.addEventListener('click', (e) => {
+        if (sidebar && !sidebar.contains(e.target) && !menuBtn.contains(e.target) && sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
         }
-        
-        try {
-            const res = await fetch(`${API_BASE_URL}/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-            const data = await res.json();
-            
-            if (data.success) {
-                currentUser = username;
-                currentUserDownloads = data.downloads || 0;
-                localStorage.setItem('currentUser', currentUser);
-                localStorage.setItem('currentUserDownloads', currentUserDownloads);
-                updateUI();
-                showToast('✅ تم تسجيل الدخول بنجاح', '#4caf50');
+    });
+    
+    function goToHome() {
+        document.getElementById('homePage').style.display = 'block';
+        document.querySelectorAll('.download-page').forEach(page => {
+            page.classList.remove('active');
+        });
+        if (sidebar) sidebar.classList.remove('open');
+    }
+    
+    function goToPage(pageId) {
+        document.getElementById('homePage').style.display = 'none';
+        document.querySelectorAll('.download-page').forEach(page => {
+            page.classList.remove('active');
+        });
+        document.getElementById(pageId + 'Page').classList.add('active');
+        if (sidebar) sidebar.classList.remove('open');
+    }
+    
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const pageId = item.getAttribute('data-page');
+            if (pageId === 'home') {
+                goToHome();
             } else {
-                showToast('❌ ' + (data.error || 'فشل تسجيل الدخول'), '#f44336');
+                goToPage(pageId);
             }
-        } catch(e) {
-            showToast('❌ خطأ في الاتصال بالخادم', '#f44336');
-        }
-    }
+        });
+    });
     
-    async function register() {
-        const username = document.getElementById('regUsername').value.trim();
-        const password = document.getElementById('regPassword').value.trim();
-        
-        if (!username || !password) {
-            showToast('❌ الرجاء ملء جميع الحقول', '#f44336');
-            return;
-        }
-        
+    async function pasteToInput(inputId) {
         try {
-            const res = await fetch(`${API_BASE_URL}/register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-            const data = await res.json();
-            
-            if (data.success) {
-                showToast('✅ تم إنشاء الحساب بنجاح', '#4caf50');
-                showLoginForm();
-            } else {
-                showToast('❌ ' + (data.error || 'فشل إنشاء الحساب'), '#f44336');
-            }
-        } catch(e) {
-            showToast('❌ خطأ في الاتصال بالخادم', '#f44336');
+            const text = await navigator.clipboard.readText();
+            document.getElementById(inputId).value = text;
+            showToast('✅ تم لصق الرابط', '#4caf50');
+        } catch(err) {
+            showToast('❌ فشل اللصق', '#f44336');
         }
     }
     
-    function logout() {
-        currentUser = null;
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('currentUserDownloads');
-        updateUI();
-        showToast('✅ تم تسجيل الخروج', '#4caf50');
-        goToHome();
-    }
-    
-    function showLoginForm() {
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('registerForm').style.display = 'none';
-    }
-    
-    function showRegisterForm() {
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('registerForm').style.display = 'block';
+    function showToast(msg, bgColor) {
+        const div = document.createElement('div');
+        div.textContent = msg;
+        div.style.cssText = `position:fixed;bottom:20px;left:20px;background:${bgColor};color:white;padding:12px 24px;border-radius:50px;z-index:9999;font-weight:bold;`;
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 2500);
     }
     
     async function downloadMedia(platform, mediaType = 'video') {
-        if (!currentUser) {
-            showToast('❌ الرجاء تسجيل الدخول أولاً', '#f44336');
-            return;
-        }
-        
         const urlInput = document.getElementById(`${platform}Url`);
         const url = urlInput?.value.trim();
-        
         if (!url) {
             showError(platform, 'الرجاء إدخال رابط صحيح');
             return;
@@ -343,111 +218,67 @@
         hideResult(platform);
         
         try {
-            const res = await fetch(`${API_BASE_URL}/download`, {
+            const response = await fetch(`${API_BASE_URL}/download`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url, type: mediaType, user: currentUser })
+                body: JSON.stringify({ url: url, type: mediaType })
             });
-            const data = await res.json();
-            
-            if (!data.success) {
-                throw new Error(data.error || 'فشل التحميل');
-            }
-            
+            const data = await response.json();
+            if (!data.success) throw new Error(data.error || 'فشل التحميل');
             displayResult(platform, data);
-            currentUserDownloads++;
-            localStorage.setItem('currentUserDownloads', currentUserDownloads);
-            document.getElementById('userDownloads').innerHTML = `<i class="fas fa-download"></i> ${currentUserDownloads}`;
-            
-        } catch(e) {
-            showError(platform, e.message);
+        } catch(error) {
+            showError(platform, error.message);
         } finally {
             showLoading(platform, false);
         }
     }
     
-    async function checkAdminLogin() {
-        const pwd = document.getElementById('adminPassword').value;
-        if (pwd === 's7abow') {
-            document.getElementById('adminContent').style.display = 'block';
-            await loadAdminStats();
-            await loadPlatformsToggle();
-        } else {
-            showToast('❌ كلمة المرور غير صحيحة', '#f44336');
+    function displayResult(platform, data) {
+        const resultDiv = document.getElementById(`${platform}Result`);
+        resultDiv.innerHTML = `
+            ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:15px; margin-bottom:15px;">` : ''}
+            <h3 style="color:white;">${data.title || 'محتوى'}</h3>
+            ${data.author ? `<p style="color:#aaa;">👤 ${data.author}</p>` : ''}
+            <a href="${data.download_url || data.video_url}" class="download-btn" download>📥 تحميل</a>
+        `;
+        resultDiv.style.display = 'block';
+    }
+    
+    function showLoading(platform, show) {
+        const loader = document.getElementById(`${platform}Loading`);
+        if (loader) loader.style.display = show ? 'block' : 'none';
+    }
+    
+    function showError(platform, msg) {
+        const errDiv = document.getElementById(`${platform}Error`);
+        if (errDiv) {
+            errDiv.textContent = msg;
+            errDiv.style.display = 'block';
+            setTimeout(() => errDiv.style.display = 'none', 5000);
         }
     }
     
-    async function loadAdminStats() {
-        try {
-            const res = await fetch(`${API_BASE_URL}/admin/stats`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password: 's7abow' })
-            });
-            const data = await res.json();
-            if (data.success) {
-                document.getElementById('totalDownloads').textContent = data.stats.total_downloads;
-                document.getElementById('totalUsers').textContent = data.stats.total_users;
-            }
-        } catch(e) { console.log(e); }
+    function hideResult(platform) {
+        const resDiv = document.getElementById(`${platform}Result`);
+        if (resDiv) {
+            resDiv.style.display = 'none';
+            resDiv.innerHTML = '';
+        }
     }
     
-    async function loadPlatformsToggle() {
-        try {
-            const res = await fetch(`${API_BASE_URL}/admin/settings`);
-            const data = await res.json();
-            if (data.success) {
-                let html = '';
-                Object.keys(data.settings).forEach(p => {
-                    html += `<div class="toggle-switch"><span>${p}</span><label><input type="checkbox" ${data.settings[p] ? 'checked' : ''} onchange="togglePlatform('${p}', this.checked)"></label></div>`;
-                });
-                document.getElementById('platformsToggle').innerHTML = html;
-            }
-        } catch(e) { console.log(e); }
-    }
+    document.querySelectorAll('.btn-paste').forEach(btn => {
+        btn.addEventListener('click', () => pasteToInput(btn.getAttribute('data-input')));
+    });
     
-    async function togglePlatform(platform, enabled) {
-        try {
-            await fetch(`${API_BASE_URL}/admin/settings`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ platform, enabled, password: 's7abow' })
-            });
-            showToast(`✅ ${platform} ${enabled ? 'تم التفعيل' : 'تم الإيقاف'}`, '#4caf50');
-        } catch(e) { showToast('❌ فشل التحديث', '#f44336'); }
-    }
+    document.querySelectorAll('button[data-platform]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const platform = btn.getAttribute('data-platform');
+            const mediaType = btn.getAttribute('data-type') || 'video';
+            downloadMedia(platform, mediaType);
+        });
+    });
     
-    function showToast(msg, bgColor) {
-        const div = document.createElement('div');
-        div.textContent = msg;
-        div.style.cssText = `position:fixed;bottom:20px;left:20px;background:${bgColor};color:white;padding:8px 16px;border-radius:50px;z-index:9999;font-weight:bold;font-size:12px;`;
-        document.body.appendChild(div);
-        setTimeout(() => div.remove(), 2000);
-    }
-    
-    function copyToClipboard(id) {
-        navigator.clipboard.writeText(document.getElementById(id).innerText);
-        showToast('✅ تم النسخ', '#4caf50');
-    }
-    
-    const menuBtn = document.getElementById('menuBtn');
-    const sidebar = document.getElementById('sidebar');
-    if (menuBtn) menuBtn.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.toggle('open'); });
-    document.addEventListener('click', (e) => { if (sidebar && !sidebar.contains(e.target) && !menuBtn.contains(e.target) && sidebar.classList.contains('open')) sidebar.classList.remove('open'); });
-    
-    function goToHome() { document.getElementById('homePage').style.display = 'block'; document.querySelectorAll('.download-page, .admin-page, .api-page').forEach(p => p.classList.remove('active')); if(sidebar) sidebar.classList.remove('open'); }
-    function goToPage(pageId) { document.getElementById('homePage').style.display = 'none'; document.querySelectorAll('.download-page, .admin-page, .api-page').forEach(p => p.classList.remove('active')); document.getElementById(pageId + 'Page').classList.add('active'); if(sidebar) sidebar.classList.remove('open'); }
-    
-    document.querySelectorAll('.nav-item').forEach(item => { item.addEventListener('click', () => { const p = item.getAttribute('data-page'); if (p === 'home') goToHome(); else if (p) goToPage(p); }); });
-    document.querySelectorAll('.btn-paste').forEach(btn => { btn.addEventListener('click', () => { const id = btn.getAttribute('data-input'); navigator.clipboard.readText().then(t => { document.getElementById(id).value = t; showToast('✅ تم لصق الرابط', '#4caf50'); }).catch(() => showToast('❌ فشل اللصق', '#f44336')); }); });
-    document.querySelectorAll('button[data-platform]').forEach(btn => { btn.addEventListener('click', () => { const p = btn.getAttribute('data-platform'); const t = btn.getAttribute('data-type') || 'video'; downloadMedia(p, t); }); });
-    
-    function showLoading(p, s) { const l = document.getElementById(`${p}Loading`); if (l) l.style.display = s ? 'block' : 'none'; }
-    function showError(p, m) { const e = document.getElementById(`${p}Error`); if (e) { e.textContent = m; e.style.display = 'block'; setTimeout(() => e.style.display = 'none', 5000); } }
-    function hideResult(p) { const r = document.getElementById(`${p}Result`); if (r) { r.style.display = 'none'; r.innerHTML = ''; } }
-    function displayResult(p, d) { const r = document.getElementById(`${p}Result`); r.innerHTML = `${d.thumbnail ? `<img src="${d.thumbnail}" style="width:100%;border-radius:12px;margin-bottom:10px;">` : ''}<h3 style="color:white;font-size:14px;">${d.title || 'محتوى'}</h3>${d.author ? `<p style="color:#aaa;font-size:12px;">👤 ${d.author}</p>` : ''}<a href="${d.download_url || d.video_url}" class="download-btn" download>📥 تحميل</a>`; r.style.display = 'block'; }
-    
-    updateUI();
+    document.getElementById('homePage').style.display = 'block';
 </script>
 </body>
 </html>
