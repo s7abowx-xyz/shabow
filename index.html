@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>s7abow | تحميل فيديوهات من جميع المنصات</title>
+    <title>s7abow | تحميل + بحث فيديوهات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -35,14 +35,10 @@
         .fullstack-tagline { text-align: center; margin-top: 1rem; font-size: 0.95rem; font-weight: 500; color: #b4d0ff; display: flex; align-items: center; justify-content: center; gap: 0.6rem; flex-wrap: wrap; }
         .social-row { display: flex; justify-content: center; gap: 2rem; margin: 1.6rem 0 1rem; flex-wrap: wrap; }
         .contact-btn { background: rgba(15, 25, 45, 0.85); backdrop-filter: blur(8px); border-radius: 60px; padding: 0.7rem 1.9rem; display: inline-flex; align-items: center; gap: 0.7rem; font-weight: 700; font-size: 1rem; border: 1px solid rgba(100, 200, 255, 0.4); transition: all 0.2s; color: #eef5ff; text-decoration: none; }
-        .contact-btn.telegram:hover { background: #1f6f8f; }
-        .contact-btn.whatsapp:hover { background: #1f8f4e; }
         .skills-section { padding: 1.6rem 1.8rem; border-bottom: 1px solid rgba(72, 187, 255, 0.2); }
         .section-title { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.2rem; color: #d6f0ff; }
-        .section-title i { font-size: 1.3rem; color: #5bc0ff; }
         .skills-grid { display: flex; flex-wrap: wrap; gap: 0.9rem; }
         .skill-pill { background: rgba(0, 30, 50, 0.7); backdrop-filter: blur(4px); padding: 0.5rem 1.3rem; border-radius: 40px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(0, 255, 255, 0.25); font-size: 0.95rem; }
-        .skill-pill i { font-size: 1.1rem; color: #7ad0ff; }
         .channel-section { padding: 1.6rem 1.8rem 2rem; text-align: center; }
         .channel-box { background: linear-gradient(125deg, #0e1a2e, #091222); border-radius: 2rem; padding: 1.5rem 1rem; border: 1px solid rgba(0, 230, 250, 0.35); }
         .channel-icon { font-size: 2.2rem; color: #57c7ff; margin-bottom: 0.7rem; }
@@ -50,37 +46,37 @@
         .channel-link { display: inline-flex; align-items: center; gap: 10px; background: rgba(0, 255, 255, 0.08); padding: 0.7rem 1.6rem; border-radius: 60px; text-decoration: none; color: #cdf2ff; font-weight: 600; border: 1px solid #2ea0c0; transition: 0.2s; }
         .footer-note { text-align: center; padding: 1rem; font-size: 0.7rem; color: #7c9ed6; border-top: 1px solid rgba(72, 187, 255, 0.15); }
         
-        .download-page, .dev-page { display: none; max-width: 700px; width: 100%; margin: 0 auto; }
-        .download-page.active, .dev-page.active { display: block; }
+        .page { display: none; max-width: 700px; width: 100%; margin: 0 auto; }
+        .page.active { display: block; }
         .card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 25px; padding: 35px; border: 1px solid rgba(255,255,255,0.2); }
         .card h1 { font-size: 28px; text-align: center; margin-bottom: 8px; }
         .card .sub { color: #aaa; text-align: center; margin-bottom: 25px; font-size: 14px; }
+        
         .input-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .input-group input { flex: 1; padding: 14px 18px; border: none; border-radius: 50px; font-size: 15px; background: white; outline: none; }
         .input-group button { padding: 14px 22px; background: #ff0050; color: white; border: none; border-radius: 50px; font-size: 15px; cursor: pointer; font-weight: bold; }
         .btn-paste { background: #25f4ee !important; color: #000 !important; }
+        .btn-search { background: #25f4ee !important; color: #000 !important; }
+        
         .result { display: none; margin-top: 25px; background: rgba(0,0,0,0.5); border-radius: 20px; padding: 20px; }
         .loading { display: none; text-align: center; color: white; margin: 20px 0; }
         .error { color: #ff6b6b; text-align: center; margin-top: 15px; display: none; }
-        .download-btn { display: inline-block; background: #25f4ee; color: #000; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 15px; }
-        .back-home { display: block; text-align: center; margin-top: 20px; color: #25f4ee; cursor: pointer; text-decoration: none; }
         
-        /* صفحة المطور */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
-        .stat-card { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; text-align: center; }
-        .stat-card h3 { font-size: 32px; color: #25f4ee; margin-bottom: 5px; }
-        .stat-card p { color: #aaa; font-size: 14px; }
-        
-        .api-endpoints { margin-top: 30px; }
-        .api-item { background: rgba(0,0,0,0.3); border-radius: 15px; padding: 15px; margin: 10px 0; }
-        .api-item h4 { color: #25f4ee; margin-bottom: 10px; }
-        .api-url { background: #0a0a1a; padding: 10px; border-radius: 10px; font-family: monospace; font-size: 12px; direction: ltr; text-align: left; word-break: break-all; margin: 10px 0; }
-        .copy-btn { background: #25f4ee; color: #000; border: none; padding: 5px 12px; border-radius: 50px; cursor: pointer; font-size: 12px; }
+        .search-results { display: grid; gap: 15px; margin-top: 20px; }
+        .search-item { background: rgba(0,0,0,0.3); border-radius: 15px; padding: 15px; display: flex; gap: 15px; cursor: pointer; transition: 0.3s; }
+        .search-item:hover { background: rgba(255,0,80,0.3); transform: scale(1.02); }
+        .search-item img { width: 120px; border-radius: 10px; object-fit: cover; }
+        .search-item-info { flex: 1; }
+        .search-item-info h4 { color: white; margin-bottom: 5px; }
+        .search-item-info p { color: #aaa; font-size: 12px; margin: 3px 0; }
+        .download-item-btn { background: #25f4ee; color: #000; border: none; padding: 8px 15px; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 10px; font-size: 12px; }
         
         @media (max-width: 480px) {
             .portfolio-card { border-radius: 2rem; }
             h1 { font-size: 2rem; }
             .avatar { width: 95px; height: 95px; }
+            .search-item { flex-direction: column; }
+            .search-item img { width: 100%; }
         }
     </style>
 </head>
@@ -94,69 +90,76 @@
 <button class="menu-btn" id="menuBtn">☰</button>
 
 <div class="sidebar" id="sidebar">
-    <h3>📥 المنصات</h3>
+    <h3>📥 القائمة</h3>
     <div class="nav-item" data-page="home"><span class="icon">🏠</span><span>الرئيسية</span></div>
-    <div class="nav-item" data-page="youtube"><span class="icon">▶️</span><span>يوتيوب</span></div>
-    <div class="nav-item" data-page="tiktok"><span class="icon">🎵</span><span>تيك توك</span></div>
-    <div class="nav-item" data-page="instagram"><span class="icon">📸</span><span>انستقرام</span></div>
-    <div class="nav-item" data-page="spotify"><span class="icon">🎧</span><span>سبوتيفاي</span></div>
-    <div class="nav-item" data-page="facebook"><span class="icon">🔵</span><span>فيسبوك</span></div>
-    <div class="nav-item" data-page="twitter"><span class="icon">🐦</span><span>تويتر</span></div>
-    <div class="nav-item" data-page="pinterest"><span class="icon">📌</span><span>بينترست</span></div>
+    <div class="nav-item" data-page="search"><span class="icon">🔍</span><span>بحث</span></div>
+    <div class="nav-item" data-page="download"><span class="icon">📥</span><span>تحميل</span></div>
     <div class="nav-item" data-page="dev"><span class="icon">⚙️</span><span>المطور</span></div>
 </div>
 
 <div class="main-content" id="mainContent">
+    <!-- الصفحة الرئيسية -->
     <div id="homePage" class="portfolio-card">
-        <div class="avatar-section">
-            <img class="avatar" src="https://cdn.dix.lat/me/33482beb-b9aa-4b4f-ac01-b7ffa40aea75.jpg" alt="s7abow">
-        </div>
-        <div class="header-glow">
-            <div class="badge-dev"><i class="fas fa-code"></i> s7abow</div>
-            <h1>s7abow</h1>
-            <div class="sub-role"><i class="fas fa-robot"></i> مطور وبات وتساب</div>
-            <div class="fullstack-tagline"><i class="fas fa-globe"></i> Full Stack Web <span>|</span> <i class="fab fa-bots"></i> Bot Engineer</div>
-        </div>
-        <div class="social-row">
-            <a href="https://t.me/K_S_m_Mark" target="_blank" class="contact-btn telegram"><i class="fab fa-telegram-plane"></i> Telegram</a>
-            <a href="https://wa.me/201017274961" target="_blank" class="contact-btn whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-        </div>
-        <div class="skills-section">
-            <div class="section-title"><i class="fas fa-cog"></i> <span>My Skills</span></div>
-            <div class="skills-grid">
-                <div class="skill-pill"><i class="fab fa-js"></i> JavaScript</div>
-                <div class="skill-pill"><i class="fab fa-python"></i> Python</div>
-                <div class="skill-pill"><i class="fab fa-html5"></i> HTML <i class="fab fa-css3-alt"></i> & CSS</div>
-                <div class="skill-pill"><i class="fas fa-database"></i> MongoDB</div>
-                <div class="skill-pill"><i class="fab fa-node-js"></i> Node.js</div>
-                <div class="skill-pill"><i class="fas fa-code-branch"></i> Bot API</div>
-            </div>
-        </div>
-        <div class="channel-section">
-            <div class="section-title" style="justify-content: center;"><i class="fab fa-whatsapp"></i> My WhatsApp Channel</div>
-            <div class="channel-box">
-                <div class="channel-icon"><i class="fab fa-whatsapp"></i></div>
-                <h3>⌗ sһᥲძ᥆w ძ᥆𝗍</h3>
-                <div class="channel-desc">أحدث الشروحات، أكواد البوتات، وأخبار التقنية</div>
-                <a href="https://whatsapp.com/channel/0029Vb7Xe9q9Bb64VJAGVA38" target="_blank" class="channel-link"><i class="fab fa-whatsapp"></i> انضم إلى القناة <i class="fas fa-arrow-left"></i></a>
-            </div>
-        </div>
+        <div class="avatar-section"><img class="avatar" src="https://cdn.dix.lat/me/33482beb-b9aa-4b4f-ac01-b7ffa40aea75.jpg" alt="s7abow"></div>
+        <div class="header-glow"><div class="badge-dev"><i class="fas fa-code"></i> s7abow</div><h1>s7abow</h1><div class="sub-role"><i class="fas fa-robot"></i> مطور وبات وتساب</div></div>
+        <div class="social-row"><a href="https://t.me/K_S_m_Mark" target="_blank" class="contact-btn telegram"><i class="fab fa-telegram-plane"></i> Telegram</a><a href="https://wa.me/201017274961" target="_blank" class="contact-btn whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a></div>
+        <div class="skills-section"><div class="section-title"><i class="fas fa-cog"></i> <span>My Skills</span></div><div class="skills-grid"><div class="skill-pill"><i class="fab fa-js"></i> JavaScript</div><div class="skill-pill"><i class="fab fa-python"></i> Python</div><div class="skill-pill"><i class="fab fa-html5"></i> HTML & CSS</div><div class="skill-pill"><i class="fas fa-database"></i> MongoDB</div><div class="skill-pill"><i class="fab fa-node-js"></i> Node.js</div><div class="skill-pill"><i class="fas fa-code-branch"></i> Bot API</div></div></div>
+        <div class="channel-section"><div class="channel-box"><div class="channel-icon"><i class="fab fa-whatsapp"></i></div><h3>⌗ s7abow</h3><div class="channel-desc">أحدث الشروحات، أكواد البوتات، وأخبار التقنية</div><a href="https://whatsapp.com/channel/0029Vb7Xe9q9Bb64VJAGVA38" target="_blank" class="channel-link"><i class="fab fa-whatsapp"></i> انضم إلى القناة</a></div></div>
         <div class="footer-note"><i class="fas fa-code"></i> Full Stack & Bot Engineer | مطور محترف</div>
     </div>
 
-    <div id="youtubePage" class="download-page"><div class="card"><h1>▶️ تحميل يوتيوب</h1><div class="sub">فيديو بجودة عالية أو MP3</div><div class="input-group"><input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=..."><button class="btn-paste" data-input="youtubeUrl">📋 لصق</button><button data-platform="youtube" data-type="video">📲 تحميل فيديو</button><button data-platform="youtube" data-type="audio" style="background:#25f4ee;color:#000;">🎵 تحميل صوت</button></div><div id="youtubeLoading" class="loading">⏳ جاري...</div><div id="youtubeResult" class="result"></div><div id="youtubeError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
-    <div id="tiktokPage" class="download-page"><div class="card"><h1>🎵 تحميل تيك توك</h1><div class="input-group"><input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/..."><button class="btn-paste" data-input="tiktokUrl">📋 لصق</button><button data-platform="tiktok">📲 تحميل</button></div><div id="tiktokLoading" class="loading"></div><div id="tiktokResult" class="result"></div><div id="tiktokError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
-    <div id="instagramPage" class="download-page"><div class="card"><h1>📸 تحميل انستقرام</h1><div class="input-group"><input type="text" id="instagramUrl" placeholder="https://www.instagram.com/p/..."><button class="btn-paste" data-input="instagramUrl">📋 لصق</button><button data-platform="instagram">📲 تحميل</button></div><div id="instagramLoading" class="loading"></div><div id="instagramResult" class="result"></div><div id="instagramError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
-    <div id="spotifyPage" class="download-page"><div class="card"><h1>🎧 تحميل سبوتيفاي</h1><div class="input-group"><input type="text" id="spotifyUrl" placeholder="https://open.spotify.com/track/..."><button class="btn-paste" data-input="spotifyUrl">📋 لصق</button><button data-platform="spotify">📲 تحميل</button></div><div id="spotifyLoading" class="loading"></div><div id="spotifyResult" class="result"></div><div id="spotifyError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
-    <div id="facebookPage" class="download-page"><div class="card"><h1>🔵 تحميل فيسبوك</h1><div class="input-group"><input type="text" id="facebookUrl" placeholder="https://www.facebook.com/.../videos/..."><button class="btn-paste" data-input="facebookUrl">📋 لصق</button><button data-platform="facebook">📲 تحميل</button></div><div id="facebookLoading" class="loading"></div><div id="facebookResult" class="result"></div><div id="facebookError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
-    <div id="twitterPage" class="download-page"><div class="card"><h1>🐦 تحميل تويتر</h1><div class="input-group"><input type="text" id="twitterUrl" placeholder="https://twitter.com/user/status/..."><button class="btn-paste" data-input="twitterUrl">📋 لصق</button><button data-platform="twitter">📲 تحميل</button></div><div id="twitterLoading" class="loading"></div><div id="twitterResult" class="result"></div><div id="twitterError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
-    <div id="pinterestPage" class="download-page"><div class="card"><h1>📌 تحميل بينترست</h1><div class="input-group"><input type="text" id="pinterestUrl" placeholder="https://www.pinterest.com/pin/..."><button class="btn-paste" data-input="pinterestUrl">📋 لصق</button><button data-platform="pinterest">📲 تحميل</button></div><div id="pinterestLoading" class="loading"></div><div id="pinterestResult" class="result"></div><div id="pinterestError" class="error"></div><div class="back-home" onclick="goToHome()">← العودة للرئيسية</div></div></div>
+    <!-- صفحة البحث -->
+    <div id="searchPage" class="page">
+        <div class="card">
+            <h1>🔍 بحث فيديوهات وأغاني</h1>
+            <div class="sub">ابحث عن فيديوهات أو أغاني من يوتيوب</div>
+            
+            <div class="input-group">
+                <input type="text" id="searchQuery" placeholder="اكتب كلمة البحث...">
+                <select id="searchType" style="padding: 14px 18px; border-radius: 50px; background: white; border: none;">
+                    <option value="video">🎬 فيديوهات</option>
+                    <option value="audio">🎵 أغاني</option>
+                </select>
+                <button class="btn-search" onclick="searchVideos()">🔍 بحث</button>
+            </div>
+            
+            <div id="searchLoading" class="loading">⏳ جاري البحث...</div>
+            <div id="searchError" class="error"></div>
+            <div id="searchResults" class="search-results"></div>
+            
+            <div class="back-home" onclick="goToHome()">← العودة للرئيسية</div>
+        </div>
+    </div>
+
+    <!-- صفحة التحميل -->
+    <div id="downloadPage" class="page">
+        <div class="card">
+            <h1>📥 تحميل فيديو</h1>
+            <div class="sub">أدخل رابط الفيديو من أي منصة</div>
+            
+            <div class="input-group">
+                <input type="text" id="downloadUrl" placeholder="https://www.youtube.com/watch?v=...">
+                <button class="btn-paste" onclick="pasteToInput()">📋 لصق</button>
+                <select id="downloadType" style="padding: 14px 18px; border-radius: 50px; background: white; border: none;">
+                    <option value="video">🎬 فيديو MP4</option>
+                    <option value="audio">🎵 صوت MP3</option>
+                </select>
+                <button onclick="downloadVideo()">📲 تحميل</button>
+            </div>
+            
+            <div id="downloadLoading" class="loading">⏳ جاري التحميل...</div>
+            <div id="downloadResult" class="result"></div>
+            <div id="downloadError" class="error"></div>
+            
+            <div class="back-home" onclick="goToHome()">← العودة للرئيسية</div>
+        </div>
+    </div>
 
     <!-- صفحة المطور -->
-    <div id="devPage" class="dev-page">
+    <div id="devPage" class="page">
         <div class="card">
-            <h1>⚙️ لوحة التحكم - المطور</h1>
-            <div class="sub">إحصائيات الموقع وواجهات API</div>
+            <h1>⚙️ لوحة المطور</h1>
+            <div class="sub">إحصائيات الموقع</div>
             
             <div class="input-group">
                 <input type="password" id="devPassword" placeholder="كلمة المرور">
@@ -164,68 +167,14 @@
             </div>
             
             <div id="devContent" style="display: none;">
-                <!-- الإحصائيات -->
-                <div class="stats-grid" id="statsContainer">
-                    <div class="stat-card">
-                        <h3 id="totalDownloads">0</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0;">
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 20px; text-align: center;">
+                        <h3 id="totalDownloads" style="color: #25f4ee; font-size: 32px;">0</h3>
                         <p>إجمالي التحميلات</p>
                     </div>
-                    <div class="stat-card">
-                        <h3 id="totalUsers">0</h3>
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 20px; text-align: center;">
+                        <h3 id="totalUsers" style="color: #25f4ee; font-size: 32px;">0</h3>
                         <p>عدد المستخدمين</p>
-                    </div>
-                </div>
-                
-                <!-- واجهات API -->
-                <div class="api-endpoints">
-                    <div class="section-title"><i class="fas fa-code"></i> <span>واجهات API للمطورين</span></div>
-                    
-                    <div class="api-item">
-                        <h4>📥 API عام للتحميل</h4>
-                        <div class="api-url" id="apiGeneral">https://s7abow-production-ac06.up.railway.app/download</div>
-                        <button class="copy-btn" onclick="copyToClipboard('apiGeneral')">📋 نسخ الرابط</button>
-                    </div>
-                    
-                    <div class="api-item">
-                        <h4>▶️ API تحميل يوتيوب</h4>
-                        <div class="api-url" id="apiYoutube">https://s7abow-production-ac06.up.railway.app/download?platform=youtube</div>
-                        <button class="copy-btn" onclick="copyToClipboard('apiYoutube')">📋 نسخ الرابط</button>
-                    </div>
-                    
-                    <div class="api-item">
-                        <h4>🎵 API تحميل تيك توك</h4>
-                        <div class="api-url" id="apiTiktok">https://s7abow-production-ac06.up.railway.app/download?platform=tiktok</div>
-                        <button class="copy-btn" onclick="copyToClipboard('apiTiktok')">📋 نسخ الرابط</button>
-                    </div>
-                    
-                    <div class="api-item">
-                        <h4>📸 API تحميل انستقرام</h4>
-                        <div class="api-url" id="ApiInstagram">https://s7abow-production-ac06.up.railway.app/download?platform=instagram</div>
-                        <button class="copy-btn" onclick="copyToClipboard('ApiInstagram')">📋 نسخ الرابط</button>
-                    </div>
-                    
-                    <div class="api-item">
-                        <h4>🎧 API تحميل سبوتيفاي</h4>
-                        <div class="api-url" id="ApiSpotify">https://s7abow-production-ac06.up.railway.app/download?platform=spotify</div>
-                        <button class="copy-btn" onclick="copyToClipboard('ApiSpotify')">📋 نسخ الرابط</button>
-                    </div>
-                    
-                    <div class="api-item">
-                        <h4>🔵 API تحميل فيسبوك</h4>
-                        <div class="api-url" id="ApiFacebook">https://s7abow-production-ac06.up.railway.app/download?platform=facebook</div>
-                        <button class="copy-btn" onclick="copyToClipboard('ApiFacebook')">📋 نسخ الرابط</button>
-                    </div>
-                    
-                    <div class="api-item">
-                        <h4>🐦 API تحميل تويتر</h4>
-                        <div class="api-url" id="ApiTwitter">https://s7abow-production-ac06.up.railway.app/download?platform=twitter</div>
-                        <button class="copy-btn" onclick="copyToClipboard('ApiTwitter')">📋 نسخ الرابط</button>
-                    </div>
-                    
-                    <div class="api-item">
-                        <h4>📌 API تحميل بينترست</h4>
-                        <div class="api-url" id="ApiPinterest">https://s7abow-production-ac06.up.railway.app/download?platform=pinterest</div>
-                        <button class="copy-btn" onclick="copyToClipboard('ApiPinterest')">📋 نسخ الرابط</button>
                     </div>
                 </div>
             </div>
@@ -236,7 +185,6 @@
 </div>
 
 <script>
-    // ========== الرابط الصحيح للـ API ==========
     const API_BASE_URL = 'https://s7abow-production-ac06.up.railway.app';
     
     const menuBtn = document.getElementById('menuBtn');
@@ -256,42 +204,24 @@
     });
     
     function goToHome() {
+        document.querySelectorAll('.page, .portfolio-card').forEach(p => p.style.display = 'none');
         document.getElementById('homePage').style.display = 'block';
-        document.querySelectorAll('.download-page, .dev-page').forEach(page => {
-            page.classList.remove('active');
-        });
         if (sidebar) sidebar.classList.remove('open');
     }
     
     function goToPage(pageId) {
-        document.getElementById('homePage').style.display = 'none';
-        document.querySelectorAll('.download-page, .dev-page').forEach(page => {
-            page.classList.remove('active');
-        });
-        document.getElementById(pageId + 'Page').classList.add('active');
+        document.querySelectorAll('.page, .portfolio-card').forEach(p => p.style.display = 'none');
+        document.getElementById(pageId + 'Page').style.display = 'block';
         if (sidebar) sidebar.classList.remove('open');
     }
     
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', () => {
             const pageId = item.getAttribute('data-page');
-            if (pageId === 'home') {
-                goToHome();
-            } else {
-                goToPage(pageId);
-            }
+            if (pageId === 'home') goToHome();
+            else goToPage(pageId);
         });
     });
-    
-    async function pasteToInput(inputId) {
-        try {
-            const text = await navigator.clipboard.readText();
-            document.getElementById(inputId).value = text;
-            showToast('✅ تم لصق الرابط', '#4caf50');
-        } catch(err) {
-            showToast('❌ فشل اللصق', '#f44336');
-        }
-    }
     
     function showToast(msg, bgColor) {
         const div = document.createElement('div');
@@ -301,67 +231,148 @@
         setTimeout(() => div.remove(), 2500);
     }
     
-    async function downloadMedia(platform, mediaType = 'video') {
-        const urlInput = document.getElementById(`${platform}Url`);
-        const url = urlInput?.value.trim();
-        if (!url) {
-            showError(platform, 'الرجاء إدخال رابط صحيح');
-            return;
-        }
-        
-        showLoading(platform, true);
-        hideResult(platform);
-        
-        try {
-            const response = await fetch(`${API_BASE_URL}/download`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: url, type: mediaType })
-            });
-            const data = await response.json();
-            if (!data.success) throw new Error(data.error || 'فشل التحميل');
-            displayResult(platform, data);
-        } catch(error) {
-            showError(platform, error.message);
-        } finally {
-            showLoading(platform, false);
-        }
+    function showLoading(elementId, show) {
+        document.getElementById(elementId).style.display = show ? 'block' : 'none';
     }
     
-    function displayResult(platform, data) {
-        const resultDiv = document.getElementById(`${platform}Result`);
-        resultDiv.innerHTML = `
-            ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:15px; margin-bottom:15px;">` : ''}
-            <h3 style="color:white;">${data.title || 'محتوى'}</h3>
-            ${data.author ? `<p style="color:#aaa;">👤 ${data.author}</p>` : ''}
-            <a href="${data.download_url || data.video_url}" class="download-btn" download>📥 تحميل</a>
-        `;
-        resultDiv.style.display = 'block';
+    function showError(elementId, msg) {
+        const errDiv = document.getElementById(elementId);
+        errDiv.textContent = msg;
+        errDiv.style.display = 'block';
+        setTimeout(() => errDiv.style.display = 'none', 5000);
     }
     
-    function showLoading(platform, show) {
-        const loader = document.getElementById(`${platform}Loading`);
-        if (loader) loader.style.display = show ? 'block' : 'none';
-    }
-    
-    function showError(platform, msg) {
-        const errDiv = document.getElementById(`${platform}Error`);
-        if (errDiv) {
-            errDiv.textContent = msg;
-            errDiv.style.display = 'block';
-            setTimeout(() => errDiv.style.display = 'none', 5000);
-        }
-    }
-    
-    function hideResult(platform) {
-        const resDiv = document.getElementById(`${platform}Result`);
+    function hideResult(elementId) {
+        const resDiv = document.getElementById(elementId);
         if (resDiv) {
             resDiv.style.display = 'none';
             resDiv.innerHTML = '';
         }
     }
     
-    // دوال صفحة المطور
+    // ========== البحث ==========
+    async function searchVideos() {
+        const query = document.getElementById('searchQuery').value.trim();
+        const type = document.getElementById('searchType').value;
+        
+        if (!query) {
+            showError('searchError', 'الرجاء إدخال كلمة البحث');
+            return;
+        }
+        
+        showLoading('searchLoading', true);
+        hideResult('searchResults');
+        showError('searchError', '');
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/search`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: query, type: type, limit: 15 })
+            });
+            const data = await response.json();
+            
+            if (!data.success) throw new Error(data.error || 'فشل البحث');
+            
+            displaySearchResults(data.results, type);
+        } catch(error) {
+            showError('searchError', error.message);
+        } finally {
+            showLoading('searchLoading', false);
+        }
+    }
+    
+    function displaySearchResults(results, type) {
+        const resultsDiv = document.getElementById('searchResults');
+        
+        if (!results || results.length === 0) {
+            resultsDiv.innerHTML = '<p style="text-align:center;color:#aaa;">❌ لا توجد نتائج</p>';
+            resultsDiv.style.display = 'block';
+            return;
+        }
+        
+        let html = '';
+        results.forEach(item => {
+            html += `
+                <div class="search-item" onclick="downloadFromSearch('${item.url}', '${type}')">
+                    <img src="${item.thumbnail}" alt="thumbnail">
+                    <div class="search-item-info">
+                        <h4>${item.title || 'بدون عنوان'}</h4>
+                        <p>👤 ${item.author || 'غير معروف'}</p>
+                        <p>⏱️ ${item.duration ? Math.floor(item.duration / 60) + ':' + (item.duration % 60).toString().padStart(2, '0') : 'غير محدد'}</p>
+                        <button class="download-item-btn" onclick="event.stopPropagation(); downloadFromSearch('${item.url}', '${type}')">📥 تحميل</button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        resultsDiv.innerHTML = html;
+        resultsDiv.style.display = 'block';
+    }
+    
+    async function downloadFromSearch(url, type) {
+        // التبديل لصفحة التحميل
+        goToPage('download');
+        document.getElementById('downloadUrl').value = url;
+        document.getElementById('downloadType').value = type;
+        downloadVideo();
+    }
+    
+    // ========== التحميل ==========
+    async function pasteToInput() {
+        try {
+            const text = await navigator.clipboard.readText();
+            document.getElementById('downloadUrl').value = text;
+            showToast('✅ تم لصق الرابط', '#4caf50');
+        } catch(err) {
+            showToast('❌ فشل اللصق', '#f44336');
+        }
+    }
+    
+    async function downloadVideo() {
+        const url = document.getElementById('downloadUrl').value.trim();
+        const type = document.getElementById('downloadType').value;
+        
+        if (!url) {
+            showError('downloadError', 'الرجاء إدخال رابط');
+            return;
+        }
+        
+        showLoading('downloadLoading', true);
+        hideResult('downloadResult');
+        showError('downloadError', '');
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/download`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url, type: type })
+            });
+            const data = await response.json();
+            
+            if (!data.success) throw new Error(data.error || 'فشل التحميل');
+            
+            displayDownloadResult(data);
+        } catch(error) {
+            showError('downloadError', error.message);
+        } finally {
+            showLoading('downloadLoading', false);
+        }
+    }
+    
+    function displayDownloadResult(data) {
+        const resultDiv = document.getElementById('downloadResult');
+        resultDiv.innerHTML = `
+            ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:15px; margin-bottom:15px;">` : ''}
+            <h3 style="color:white;">${data.title || 'محتوى'}</h3>
+            ${data.author ? `<p style="color:#aaa;">👤 ${data.author}</p>` : ''}
+            ${data.duration ? `<p style="color:#aaa;">⏱️ ${Math.floor(data.duration / 60)}:${(data.duration % 60).toString().padStart(2, '0')}</p>` : ''}
+            <a href="${data.download_url}" class="download-btn" style="display:inline-block;background:#25f4ee;color:#000;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:bold;margin-top:15px;" download>📥 تحميل</a>
+        `;
+        resultDiv.style.display = 'block';
+    }
+    
+    // ========== صفحة المطور ==========
     async function checkDevLogin() {
         const pwd = document.getElementById('devPassword').value;
         if (pwd === 's7abow') {
@@ -385,27 +396,9 @@
                 document.getElementById('totalUsers').textContent = data.stats.total_users || 0;
             }
         } catch(e) {
-            console.log('خطأ في جلب الإحصائيات', e);
+            console.log('خطأ في جلب الإحصائيات');
         }
     }
-    
-    function copyToClipboard(elementId) {
-        const text = document.getElementById(elementId).innerText;
-        navigator.clipboard.writeText(text);
-        showToast('✅ تم نسخ الرابط', '#4caf50');
-    }
-    
-    document.querySelectorAll('.btn-paste').forEach(btn => {
-        btn.addEventListener('click', () => pasteToInput(btn.getAttribute('data-input')));
-    });
-    
-    document.querySelectorAll('button[data-platform]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const platform = btn.getAttribute('data-platform');
-            const mediaType = btn.getAttribute('data-type') || 'video';
-            downloadMedia(platform, mediaType);
-        });
-    });
     
     document.getElementById('homePage').style.display = 'block';
 </script>
