@@ -317,4 +317,165 @@
     function copyToClipboard(elementId) {
         const text = document.getElementById(elementId).innerText;
         navigator.clipboard.writeText(text);
-        showToast('✅ تم نسخ الرابط', '
+        showToast('✅ تم نسخ الرابط', '#4caf50');
+    }
+    
+    // ========== البحث ==========
+    async function searchVideos() {
+        const query = document.getElementById('searchQuery').value.trim();
+        const type = document.getElementById('searchType').value;
+        
+        if (!query) {
+            showError('searchError', 'الرجاء إدخال كلمة البحث');
+            return;
+        }
+        
+        showLoading('searchLoading', true);
+        hideResult('searchResults');
+        showError('searchError', '');
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/search`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: query, type: type, limit: 15 })
+            });
+            const data = await response.json();
+            
+            if (!data.success) throw new Error(data.error || 'فشل البحث');
+            
+            displaySearchResults(data.results, type);
+        } catch(error) {
+            showError('searchError', error.message);
+        } finally {
+            showLoading('searchLoading', false);
+        }
+    }
+    
+    function displaySearchResults(results, type) {
+        const resultsDiv = document.getElementById('searchResults');
+        
+        if (!results || results.length === 0) {
+            resultsDiv.innerHTML = '<p style="text-align:center;color:#aaa;">❌ لا توجد نتائج</p>';
+            resultsDiv.style.display = 'block';
+            return;
+        }
+        
+        let html = '';
+        results.forEach(item => {
+            html += `
+                <div class="search-item" onclick="downloadFromSearch('${item.url}', '${type}')">
+                    <img src="${item.thumbnail}" alt="thumbnail">
+                    <div class="search-item-info">
+                        <h4>${escapeHtml(item.title || 'بدون عنوان')}</h4>
+                        <p>👤 ${escapeHtml(item.author || 'غير معروف')}</p>
+                        <p>⏱️ ${item.duration ? Math.floor(item.duration / 60) + ':' + (item.duration % 60).toString().padStart(2, '0') : 'غير محدد'}</p>
+                        <button class="download-item-btn" onclick="event.stopPropagation(); downloadFromSearch('${item.url}', '${type}')">📥 تحميل</button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        resultsDiv.innerHTML = html;
+        resultsDiv.style.display = 'block';
+    }
+    
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    async function downloadFromSearch(url, type) {
+        goToPage('download');
+        document.getElementById('downloadUrl').value = url;
+        document.getElementById('downloadType').value = type;
+        downloadVideo();
+    }
+    
+    // ========== التحميل ==========
+    async function pasteToInput() {
+        try {
+            const text = await navigator.clipboard.readText();
+            document.getElementById('downloadUrl').value = text;
+            showToast('✅ تم لصق الرابط', '#4caf50');
+        } catch(err) {
+            showToast('❌ فشل اللصق', '#f44336');
+        }
+    }
+    
+    async function downloadVideo() {
+        const url = document.getElementById('downloadUrl').value.trim();
+        const type = document.getElementById('downloadType').value;
+        
+        if (!url) {
+            showError('downloadError', 'الرجاء إدخال رابط');
+            return;
+        }
+        
+        showLoading('downloadLoading', true);
+        hideResult('downloadResult');
+        showError('downloadError', '');
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/download`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url, type: type })
+            });
+            const data = await response.json();
+            
+            if (!data.success) throw new Error(data.error || 'فشل التحميل');
+            
+            displayDownloadResult(data);
+        } catch(error) {
+            showError('downloadError', error.message);
+        } finally {
+            showLoading('downloadLoading', false);
+        }
+    }
+    
+    function displayDownloadResult(data) {
+        const resultDiv = document.getElementById('downloadResult');
+        resultDiv.innerHTML = `
+            ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:15px; margin-bottom:15px;">` : ''}
+            <h3 style="color:white;">${escapeHtml(data.title || 'محتوى')}</h3>
+            ${data.author ? `<p style="color:#aaa;">👤 ${escapeHtml(data.author)}</p>` : ''}
+            ${data.duration ? `<p style="color:#aaa;">⏱️ ${Math.floor(data.duration / 60)}:${(data.duration % 60).toString().padStart(2, '0')}</p>` : ''}
+            <a href="${data.download_url}" class="download-btn" style="display:inline-block;background:#25f4ee;color:#000;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:bold;margin-top:15px;" download>📥 تحميل</a>
+        `;
+        resultDiv.style.display = 'block';
+    }
+    
+    // ========== صفحة المطور ==========
+    async function checkDevLogin() {
+        const pwd = document.getElementById('devPassword').value;
+        if (pwd === 's7abow') {
+            document.getElementById('devContent').style.display = 'block';
+            await loadStats();
+        } else {
+            showToast('❌ كلمة المرور غير صحيحة', '#f44336');
+        }
+    }
+    
+    async function loadStats() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/admin/stats`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: 's7abow' })
+            });
+            const data = await response.json();
+            if (data.success) {
+                document.getElementById('totalDownloads').textContent = data.stats.total_downloads || 0;
+                document.getElementById('totalUsers').textContent = data.stats.total_users || 0;
+            }
+        } catch(e) {
+            console.log('خطأ في جلب الإحصائيات');
+        }
+    }
+    
+    document.getElementById('homePage').style.display = 'block';
+</script>
+</body>
+</html>
